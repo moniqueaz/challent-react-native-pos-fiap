@@ -64,7 +64,7 @@ export const Signup = ({ callback, style: loginStyle }: LoginProps) => {
         title="Cadastre-se"
         onPress={() => callback({ email, name, password })}
       />
-      <View style={styles.signupContainer}>
+      <View style={styles.outlinkContainer}>
         <Text style={styles.text}>Você já tem conta?</Text>
         <Pressable onPress={() => router.navigate("/login")}>
           <Text style={styles.linkText}>Login</Text>

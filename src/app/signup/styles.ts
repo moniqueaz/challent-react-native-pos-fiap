@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
+import { colors } from "@/styles/colors";
 
 export const styles = StyleSheet.create({
   container: {
     position: "relative",
     height: "100%",
-    backgroundColor: "#3F9D61",
+    backgroundColor: colors.green[600],
   },
   topImage: {
     position: "absolute",

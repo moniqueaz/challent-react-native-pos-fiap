@@ -5,10 +5,10 @@ export const styles = StyleSheet.create({
   input: {
     flex: 1,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.gray[300],
     borderRadius: 8,
     padding: 8,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     marginHorizontal: 20,
     height: 40,
   },

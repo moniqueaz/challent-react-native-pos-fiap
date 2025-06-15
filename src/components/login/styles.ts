@@ -1,8 +1,9 @@
 import { StyleSheet } from "react-native";
+import { colors } from "@/styles/colors";
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.white[100],
     borderRadius: 24,
     paddingHorizontal: 26,
     paddingVertical: 20,
@@ -24,29 +25,29 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#000",
+    color: colors.text.primary,
     marginBottom: 16,
     textAlign: "center",
     paddingBottom: 40,
   },
   label: {
-    color: "#202224",
+    color: colors.text.primary,
     fontSize: 14,
     fontWeight: "600",
   },
   input: {
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.gray[200],
     fontSize: 14,
-    color: "#202224",
+    color: colors.text.primary,
     borderRadius: 8,
     padding: 12,
     width: "100%",
-    borderColor: "#D8D8D8",
+    borderColor: colors.gray[300],
     borderWidth: 1,
   },
 
   linkText: {
-    color: "#3F9D61",
+    color: colors.green[600],
     textDecorationLine: "underline",
     fontSize: 12,
     fontWeight: "700",
@@ -54,9 +55,9 @@ export const styles = StyleSheet.create({
   text: {
     fontSize: 12,
     fontWeight: "700",
-    color: "#202224",
+    color: colors.text.primary,
   },
-  registerContainer: {
+  outlinkContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

@@ -3,7 +3,7 @@ import { colors } from "@/styles/colors";
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#3F9D61",
+    backgroundColor: colors.green[600],
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 12,
@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: "auto",
   },
   title: {
-    color: "#fff",
+    color: colors.white,
     fontSize: 14,
     fontWeight: "700",
   },
