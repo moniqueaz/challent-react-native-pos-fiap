@@ -9,7 +9,7 @@ type AuthContextType = {
 
 export const AuthProvider = ({ children }: AuthContextType) => {
   useEffect(() => {
-    // router.replace("/login");
+    router.replace("/profile");
   }, []);
   return <AuthContext.Provider value={{}}>{children}</AuthContext.Provider>;
 };
