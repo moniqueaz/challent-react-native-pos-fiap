@@ -60,4 +60,13 @@ export const styles = StyleSheet.create({
     fontWeight: "500",
     color: colors.text.primary,
   },
+  input: {
+    backgroundColor: colors.gray[100],
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 14,
+    color: colors.text.primary,
+    borderWidth: 1,
+    borderColor: colors.gray[300],
+  },
 });
