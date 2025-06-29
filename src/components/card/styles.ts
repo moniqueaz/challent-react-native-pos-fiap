@@ -9,7 +9,9 @@ export const styles = StyleSheet.create({
     paddingVertical: 20,
     width: "auto",
     height: "auto",
-    flex: 1,
+    flexBasis: "auto",
+    flexShrink: 1,
+    flexGrow: 1,
   },
   bigNumber: {
     fontSize: 22,

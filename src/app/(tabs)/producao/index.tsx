@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Card } from "@/components/card";
 import { Section } from "@/components/section";
 import { Charts } from "@/components/charts";
@@ -13,10 +13,10 @@ const Pages = () => {
           <Card />
         </View>
         <Section title="Status Produção">
-          <Charts.Pie />
+          <Charts.Pie total="70%" label="Total" />
         </Section>
         <Section title="Estoque">
-          <Text>Estoque</Text>
+          <Charts.Line />
         </Section>
       </View>
     </ScrollView>

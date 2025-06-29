@@ -1,20 +1,54 @@
 import { View, Text, ScrollView } from "react-native";
 import { Section } from "@/components/section";
+import { Charts } from "@/components/charts";
+import { colors } from "@/styles/colors";
 const Pages = () => {
   return (
     <ScrollView>
       <View style={{ flex: 1, padding: 16, gap: 16 }}>
         <Section title="Metas">
-          <Text>Metas</Text>
+          <Charts.Pie
+            label="Cricket"
+            total="70%"
+            labelStyle={{
+              color: colors.blue[200],
+              fontSize: 16,
+              fontWeight: "bold",
+            }}
+          />
         </Section>
         <Section title="Meta Morango">
-          <Text>Meta Morango</Text>
+          <Charts.Pie
+            label="Morango"
+            total="80%"
+            labelStyle={{
+              color: colors.blue[200],
+              fontSize: 16,
+              fontWeight: "bold",
+            }}
+          />
         </Section>
         <Section title="Meta Milho">
-          <Text>Meta Milho</Text>
+          <Charts.Pie
+            label="Milho"
+            total="90%"
+            labelStyle={{
+              color: colors.blue[200],
+              fontSize: 16,
+              fontWeight: "bold",
+            }}
+          />
         </Section>
         <Section title="Meta Batata">
-          <Text>Meta Batata</Text>
+          <Charts.Pie
+            label="Batata"
+            total="85%"
+            labelStyle={{
+              color: colors.blue[200],
+              fontSize: 16,
+              fontWeight: "bold",
+            }}
+          />
         </Section>
       </View>
     </ScrollView>
