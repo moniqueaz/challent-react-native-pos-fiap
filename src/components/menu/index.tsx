@@ -1,47 +1,49 @@
-import { useState } from "react";
-import {
-  Text,
-  TouchableOpacity,
-  TouchableOpacityProps,
-  View,
-} from "react-native";
+import React, { useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 import { router, Href } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useAuth } from "@/context/AuthContext";
 import { styles } from "./styles";
-import { colors } from "@/styles/colors";
 
-type MenuProps = TouchableOpacityProps & {};
-
-type MaterialIconName = React.ComponentProps<typeof MaterialIcons>["name"];
-
-const menuItems: {
+type MenuItem = {
   title: string;
-  icon: MaterialIconName;
-  color: string;
-  url: Href;
-}[] = [
-  {
-    title: "Profile",
-    icon: "manage-accounts",
-    color: colors.blue[200],
-    url: "/profile" as Href,
-  },
-  {
-    title: "Change Password",
-    icon: "key",
-    color: colors.rose[200],
-    url: "/change-password" as Href,
-  },
-  {
-    title: "Logout",
-    icon: "logout",
-    color: colors.orange[200],
-    url: "/logout" as Href,
-  },
-];
+  icon: keyof typeof MaterialIcons.glyphMap;
+  url?: Href;
+  action?: () => void;
+  visible: boolean;
+};
 
-export const Menu = ({}: MenuProps) => {
+export const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useAuth();
+
+  const menuItems: MenuItem[] = [
+    {
+      title: "Profile",
+      icon: "person",
+      url: "/profile",
+      visible: !!user,
+    },
+    {
+      title: "Login",
+      icon: "login",
+      url: "/login",
+      visible: !user,
+    },
+    {
+      title: "Cadastro",
+      icon: "person-add",
+      url: "/signup",
+      visible: !user,
+    },
+    {
+      title: "Logout",
+      icon: "logout",
+      action: logout,
+      visible: !!user,
+    },
+  ];
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => setIsOpen(!isOpen)}>
@@ -49,26 +51,22 @@ export const Menu = ({}: MenuProps) => {
       </TouchableOpacity>
       {isOpen && (
         <View style={styles.boxContainer}>
-          <TouchableOpacity activeOpacity={0.7}>
-            {menuItems.map((item, index) => (
+          {menuItems
+            .filter((item) => item.visible)
+            .map((item, index) => (
               <TouchableOpacity
                 key={index}
-                style={{
-                  ...styles.item,
-                  ...(menuItems.length === index + 1 && {
-                    borderBottomWidth: 0,
-                  }),
-                }}
                 onPress={() => {
                   setIsOpen(false);
-                  router.navigate(item.url || "/");
+                  if (item.action) item.action();
+                  if (item.url) router.push(item.url);
                 }}
+                style={styles.item}
               >
-                <MaterialIcons name={item.icon} size={24} color={item.color} />
+                <MaterialIcons name={item.icon} size={24} color="black" />
                 <Text style={styles.text}>{item.title}</Text>
               </TouchableOpacity>
             ))}
-          </TouchableOpacity>
         </View>
       )}
     </View>
