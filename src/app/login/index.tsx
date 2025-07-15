@@ -1,12 +1,22 @@
+import React from "react";
 import { Alert, View, Image } from "react-native";
+import { useAuth } from "@/context/AuthContext";
+import { Login } from "@/components/login";
 import { styles } from "./styles";
 
-import { Login } from "@/components/login";
-
 const LoginPage = () => {
-  const handleLogin = () => {
-    // router.navigate("/");
-    Alert.alert("", "Login realizado com sucesso!");
+  const { login } = useAuth();
+
+  const handleLogin = async (credentials: {
+    email: string;
+    password: string;
+  }) => {
+    try {
+      await login(credentials.email, credentials.password);
+      Alert.alert("Sucesso", "Login realizado com sucesso!");
+    } catch {
+      Alert.alert("Erro", "Não foi possível realizar o login.");
+    }
   };
 
   return (
