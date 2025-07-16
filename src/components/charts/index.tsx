@@ -1,4 +1,4 @@
-import { View, ScrollView, Text, Alert } from "react-native";
+import { View, ScrollView, Text } from "react-native";
 import { BarChart, PieChart, LineChart } from "react-native-gifted-charts";
 import { DataSet } from "gifted-charts-core";
 import { colors } from "@/styles/colors";

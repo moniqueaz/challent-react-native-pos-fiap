@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import {
   View,
   Image,
@@ -47,7 +47,7 @@ const EditInput = ({
   );
 };
 
-export const Profile = ({ isEditMode }: ProfileProps) => {
+export const Profile: FC<ProfileProps> = ({ isEditMode }) => {
   const [isEditing, setIsEditing] = useState(isEditMode || false);
   const [birthDate, setBirthDate] = useState(profile.birthDate);
   const [phone, setPhone] = useState(profile.phone);

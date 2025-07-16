@@ -1,7 +1,13 @@
+import { FC } from "react";
 import { View, Text } from "react-native";
 import { styles } from "./styles";
 
-export const CardFull = ({ value, label }) => {
+type CardFullProps = {
+  value: string;
+  label: string;
+};
+
+export const CardFull: FC<CardFullProps> = ({ value, label }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.bigNumber}>{value}</Text>

@@ -1,14 +1,8 @@
-import { Text, View, Image } from "react-native";
-import { router } from "expo-router";
-
+import { View } from "react-native";
 import { Profile } from "@/components/profile";
-
-import { styles } from "./styles";
-
+import { useUsers } from "@/hooks/useUsers";
 const ProfilePage = () => {
-  const handleLogin = () => {
-    router.navigate("/");
-  };
+  useUsers();
 
   return (
     <View>

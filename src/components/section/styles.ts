@@ -18,6 +18,10 @@ export const styles = StyleSheet.create({
     fontWeight: "700",
     color: colors.text.primary,
   },
+  content: {
+    width: "100%",
+    height: "auto",
+  },
 });
 
 export default styles;

@@ -2,7 +2,9 @@ import { View, Text, ScrollView } from "react-native";
 import { Section } from "@/components/section";
 import { Charts } from "@/components/charts";
 import { colors } from "@/styles/colors";
+import { useGoals } from "@/hooks/useGoals";
 const Pages = () => {
+  useGoals();
   return (
     <ScrollView>
       <View style={{ flex: 1, padding: 16, gap: 16 }}>

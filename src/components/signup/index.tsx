@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Text, Pressable, View } from "react-native";
 import { router } from "expo-router";
 
@@ -17,7 +17,7 @@ type LoginProps = {
   style?: object;
 };
 
-export const Signup = ({ callback, style: loginStyle }: LoginProps) => {
+export const Signup: FC<LoginProps> = ({ callback, style: loginStyle }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
