@@ -37,7 +37,11 @@ const UpdateStatusPage = () => {
       ]}
       onInputChange={handleInputChange}
       buttons={[
-        { text: "Cancelar", onPress: () => Alert.alert("Cancelado!") },
+        {
+          text: "Cancelar",
+          onPress: () => Alert.alert("Cancelado!"),
+          variant: "cancel",
+        },
         { text: "Atualizar", onPress: () => Alert.alert("Status Atualizado!") },
       ]}
     />

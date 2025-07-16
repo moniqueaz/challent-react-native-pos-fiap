@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   TouchableOpacity,
   Modal,
   FlatList,
@@ -25,7 +24,7 @@ type InputField = {
 type ButtonProps = {
   text: string;
   onPress: () => void;
-  color?: string;
+  variant?: "cancel" | "submit";
 };
 
 type FormTemplateProps = {
@@ -111,14 +110,29 @@ export const FormTemplate = ({
         })}
       </View>
 
-      <View style={styles.buttonContainer}>
+      <View style={styles.buttonRow}>
         {buttons.map((button, index) => (
-          <Button
+          <TouchableOpacity
             key={index}
-            title={button.text}
             onPress={button.onPress}
-            color={button.color || "#007BFF"}
-          />
+            style={[
+              styles.button,
+              button.variant === "cancel"
+                ? styles.cancelButton
+                : styles.submitButton,
+            ]}
+          >
+            <Text
+              style={[
+                styles.buttonText,
+                button.variant === "cancel"
+                  ? styles.cancelButtonText
+                  : styles.submitButtonText,
+              ]}
+            >
+              {button.text}
+            </Text>
+          </TouchableOpacity>
         ))}
       </View>
 
@@ -130,12 +144,18 @@ export const FormTemplate = ({
           onChange={(_, selectedDate) => {
             setShowDatePicker(false);
             if (selectedDate) {
-              const day = selectedDate.getDate().toString().padStart(2, "0");
-              const month = (selectedDate.getMonth() + 1)
+              const formattedDay: string = selectedDate
+                .getDate()
                 .toString()
                 .padStart(2, "0");
-              const year = selectedDate.getFullYear();
-              const formattedDate = `${day}/${month}/${year}`;
+              const formattedMonth: string = (selectedDate.getMonth() + 1)
+                .toString()
+                .padStart(2, "0");
+              const formattedYear: string = selectedDate
+                .getFullYear()
+                .toString();
+
+              const formattedDate: string = `${formattedDay}/${formattedMonth}/${formattedYear}`;
 
               onInputChange(currentDateField, formattedDate);
             }

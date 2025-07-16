@@ -62,7 +62,11 @@ const NewProductPage = () => {
       ]}
       onInputChange={handleInputChange}
       buttons={[
-        { text: "Cancelar", onPress: () => Alert.alert("Cancelado!") },
+        {
+          text: "Cancelar",
+          onPress: () => Alert.alert("Cancelado!"),
+          variant: "cancel",
+        },
         { text: "Adicionar", onPress: () => Alert.alert("Produto Salvo!") },
       ]}
     />

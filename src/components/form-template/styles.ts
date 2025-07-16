@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -9,7 +10,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "700",
-    marginBottom: 20,
+    marginBottom: 32,
     textAlign: "center",
   },
   inputContainer: {
@@ -30,21 +31,54 @@ export const styles = StyleSheet.create({
     borderColor: "#ccc",
     padding: 12,
     fontSize: 14,
-    backgroundColor: "#fafafa",
+    backgroundColor: "#FAFAFA",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
   dateInput: {
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
   },
   dropdownInput: {
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
   },
-  buttonContainer: {
-    marginTop: 20,
-    flexDirection: "column",
-    gap: 10,
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 16,
+    marginBottom: 32,
+  },
+  button: {
+    flex: 1,
+    borderRadius: 8,
+    paddingVertical: 12,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cancelButton: {
+    backgroundColor: "#202224",
+  },
+  cancelButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  submitButton: {
+    backgroundColor: "#3F9D61",
+  },
+  submitButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  buttonText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   modalOverlay: {
     flex: 1,
