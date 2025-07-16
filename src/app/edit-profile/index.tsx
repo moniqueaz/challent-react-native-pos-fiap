@@ -1,14 +1,9 @@
 import { View } from "react-native";
-import { router } from "expo-router";
-
 import { Profile } from "@/components/profile";
-
-import { styles } from "./styles";
+import { useUsers } from "@/hooks/useUsers";
 
 const EditProfilePage = () => {
-  const handleLogin = () => {
-    router.navigate("/");
-  };
+  useUsers();
 
   return (
     <View>

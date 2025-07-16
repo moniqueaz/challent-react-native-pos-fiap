@@ -7,7 +7,11 @@ import { styles } from "./styles";
 const SignupPage = () => {
   const { signup } = useAuth();
 
-  const handleSignup = async (credentials: { email: string; name: string; password: string }) => {
+  const handleSignup = async (credentials: {
+    email: string;
+    name: string;
+    password: string;
+  }) => {
     try {
       await signup(credentials.email, credentials.password, credentials.name);
       Alert.alert("Sucesso", "Conta criada com sucesso!");
@@ -18,9 +22,15 @@ const SignupPage = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={require("@/assets/background-top.png")} style={styles.topImage} />
+      <Image
+        source={require("@/assets/background-top.png")}
+        style={styles.topImage}
+      />
       <Signup style={{ zIndex: 1 }} callback={handleSignup} />
-      <Image source={require("@/assets/background-bottom.png")} style={styles.bottomImage} />
+      <Image
+        source={require("@/assets/background-bottom.png")}
+        style={styles.bottomImage}
+      />
     </View>
   );
 };

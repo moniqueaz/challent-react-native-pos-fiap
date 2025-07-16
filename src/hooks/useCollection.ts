@@ -1,0 +1,51 @@
+import { db } from "@/services/firebaseConfig";
+import {
+  collection,
+  query,
+  getDocs,
+  getDoc,
+  doc,
+  setDoc,
+  deleteDoc,
+  addDoc,
+} from "firebase/firestore";
+export const useCollection = (name: string) => {
+  const contextCollection = collection(db, name);
+
+  const contextQuery = query(contextCollection);
+
+  return {
+    get: async (id: string) => {
+      const documentSnapshot = await getDoc(doc(contextCollection, id));
+      return documentSnapshot.data();
+    },
+    getAll: async () => {
+      const snapshot = await getDocs(contextQuery);
+      const result = snapshot.docs.map((doc) => doc.data());
+      return result;
+    },
+    getById: async (id: string) => {
+      const documentSnapshot = await getDoc(doc(contextCollection, id));
+      return documentSnapshot.exists() ? documentSnapshot.data() : null;
+    },
+    create: async (data: Record<string, any>) => {
+      const docRef = await addDoc(contextCollection, data);
+      return docRef.id;
+    },
+    update: async (id: string, data: Record<string, any>) => {
+      const docRef = doc(contextCollection, id);
+      await setDoc(docRef, data, { merge: true });
+      return id;
+    },
+    delete: async (id: string) => {
+      const docRef = doc(contextCollection, id);
+      await deleteDoc(docRef);
+      return id;
+    },
+    refresh: async () => {
+      const snapshot = await getDocs(contextQuery);
+      const result = snapshot.docs.map((doc) => doc.data());
+      return result;
+    },
+  };
+};

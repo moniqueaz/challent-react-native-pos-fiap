@@ -1,7 +1,7 @@
+import { FC } from "react";
 import { TextInput, TextInputProps } from "react-native";
-import { styles } from "./styles";
 import { colors } from "@/styles/colors";
 
-export const Input = (props: TextInputProps) => {
+export const Input: FC<TextInputProps> = (props) => {
   return <TextInput placeholderTextColor={colors.gray[900]} {...props} />;
 };

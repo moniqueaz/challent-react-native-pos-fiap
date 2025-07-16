@@ -1,18 +1,17 @@
 import { View, Text } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 import { styles } from "./styles";
-import { colors } from "@/styles/colors";
+import { FC } from "react";
 
 type SectionProps = {
   title: string;
   children?: React.ReactNode;
 };
 
-export const Section = ({ title, children }: SectionProps) => {
+export const Section: FC<SectionProps> = ({ title, children }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      {children}
+      <View style={styles.content}>{children}</View>
     </View>
   );
 };
