@@ -42,6 +42,24 @@ export const Menu = () => {
       action: logout,
       visible: !!user,
     },
+    {
+      title: "Cadastrar Produto",
+      icon: "add-circle-outline",
+      url: "/new-product",
+      visible: !!user,
+    },
+    {
+      title: "Cadastrar Venda",
+      icon: "attach-money",
+      url: "/new-sale",
+      visible: !!user,
+    },
+    {
+      title: "Atualizar Status",
+      icon: "update",
+      url: "/update-status",
+      visible: !!user,
+    },
   ];
 
   return (
