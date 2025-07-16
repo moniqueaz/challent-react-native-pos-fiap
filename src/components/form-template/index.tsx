@@ -1,0 +1,198 @@
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Modal,
+  FlatList,
+} from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { styles } from "./styles";
+import { MaterialIcons } from "@expo/vector-icons";
+
+type InputField = {
+  label: string;
+  placeholder: string;
+  name: string;
+  value: string;
+  type?: "text" | "date" | "dropdown";
+  options?: string[];
+  keyboardType?: "default" | "numeric" | "email-address";
+};
+
+type ButtonProps = {
+  text: string;
+  onPress: () => void;
+  variant?: "cancel" | "submit";
+};
+
+type FormTemplateProps = {
+  title: string;
+  inputs: InputField[];
+  buttons: ButtonProps[];
+  onInputChange: (name: string, value: string) => void;
+};
+
+export const FormTemplate = ({
+  title,
+  inputs,
+  buttons,
+  onInputChange,
+}: FormTemplateProps) => {
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [currentDateField, setCurrentDateField] = useState("");
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [currentDropdownOptions, setCurrentDropdownOptions] = useState<
+    string[]
+  >([]);
+
+  const [currentDropdownField, setCurrentDropdownField] = useState("");
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>{title}</Text>
+      <View style={styles.inputContainer}>
+        {inputs.map((input, index) => {
+          if (input.type === "date") {
+            return (
+              <View key={index} style={styles.inputWrapper}>
+                <Text style={styles.label}>{input.label}</Text>
+                <TouchableOpacity
+                  style={[styles.input, styles.dateInput]}
+                  onPress={() => {
+                    setCurrentDateField(input.name);
+                    setShowDatePicker(true);
+                  }}
+                >
+                  <Text>{input.value || input.placeholder}</Text>
+                  <MaterialIcons name="calendar-today" size={20} color="#555" />
+                </TouchableOpacity>
+              </View>
+            );
+          }
+
+          if (input.type === "dropdown") {
+            return (
+              <View key={index} style={styles.inputWrapper}>
+                <Text style={styles.label}>{input.label}</Text>
+                <TouchableOpacity
+                  style={[styles.input, styles.dropdownInput]}
+                  onPress={() => {
+                    setCurrentDropdownField(input.name);
+                    setCurrentDropdownOptions(input.options || []);
+                    setDropdownVisible(true);
+                  }}
+                >
+                  <Text>{input.value || input.placeholder}</Text>
+                  <MaterialIcons
+                    name="keyboard-arrow-down"
+                    size={24}
+                    color="#555"
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          }
+
+          return (
+            <View key={index} style={styles.inputWrapper}>
+              <Text style={styles.label}>{input.label}</Text>
+              <TextInput
+                placeholder={input.placeholder}
+                value={input.value}
+                onChangeText={(value) => onInputChange(input.name, value)}
+                style={styles.input}
+                keyboardType={input.keyboardType || "default"}
+              />
+            </View>
+          );
+        })}
+      </View>
+
+      <View style={styles.buttonRow}>
+        {buttons.map((button, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={button.onPress}
+            style={[
+              styles.button,
+              button.variant === "cancel"
+                ? styles.cancelButton
+                : styles.submitButton,
+            ]}
+          >
+            <Text
+              style={[
+                styles.buttonText,
+                button.variant === "cancel"
+                  ? styles.cancelButtonText
+                  : styles.submitButtonText,
+              ]}
+            >
+              {button.text}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {showDatePicker && (
+        <DateTimePicker
+          mode="date"
+          display="calendar"
+          value={new Date()}
+          onChange={(_, selectedDate) => {
+            setShowDatePicker(false);
+            if (selectedDate) {
+              const formattedDay: string = selectedDate
+                .getDate()
+                .toString()
+                .padStart(2, "0");
+              const formattedMonth: string = (selectedDate.getMonth() + 1)
+                .toString()
+                .padStart(2, "0");
+              const formattedYear: string = selectedDate
+                .getFullYear()
+                .toString();
+
+              const formattedDate: string = `${formattedDay}/${formattedMonth}/${formattedYear}`;
+
+              onInputChange(currentDateField, formattedDate);
+            }
+          }}
+        />
+      )}
+
+      {dropdownVisible && (
+        <Modal
+          transparent
+          animationType="fade"
+          visible={dropdownVisible}
+          onRequestClose={() => setDropdownVisible(false)}
+        >
+          <TouchableOpacity
+            style={styles.modalOverlay}
+            onPress={() => setDropdownVisible(false)}
+          />
+          <View style={styles.modalContent}>
+            <FlatList
+              data={currentDropdownOptions}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.dropdownOption}
+                  onPress={() => {
+                    onInputChange(currentDropdownField, item);
+                    setDropdownVisible(false);
+                  }}
+                >
+                  <Text>{item}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </Modal>
+      )}
+    </View>
+  );
+};
