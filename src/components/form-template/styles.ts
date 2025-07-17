@@ -19,6 +19,11 @@ export const styles = StyleSheet.create({
   inputWrapper: {
     marginBottom: 15,
   },
+  disabledInput: {
+    backgroundColor: "#f0f0f0",
+    color: "#999",
+    borderColor: "#d3d3d3",
+  },
   label: {
     fontSize: 14,
     fontWeight: "bold",
