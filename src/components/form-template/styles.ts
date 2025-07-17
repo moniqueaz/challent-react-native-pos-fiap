@@ -98,6 +98,7 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     maxHeight: "50%",
+    height: "auto",
     padding: 20,
   },
   dropdownOption: {

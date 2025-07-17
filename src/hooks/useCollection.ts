@@ -8,6 +8,7 @@ import {
   setDoc,
   deleteDoc,
   addDoc,
+  where,
 } from "firebase/firestore";
 export const useCollection = (name: string) => {
   const contextCollection = collection(db, name);
@@ -45,6 +46,15 @@ export const useCollection = (name: string) => {
     refresh: async () => {
       const snapshot = await getDocs(contextQuery);
       const result = snapshot.docs.map((doc) => doc.data());
+      return result;
+    },
+    getByUid: async (uid: string) => {
+      const q = query(contextCollection, where("uid", "==", uid));
+      const snapshot = await getDocs(q);
+      const result = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
       return result;
     },
   };

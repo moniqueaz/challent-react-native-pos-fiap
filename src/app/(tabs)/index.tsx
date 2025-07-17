@@ -38,15 +38,15 @@ const Pages = () => {
   return (
     <ScrollView>
       <View style={{ flex: 1, padding: 16, gap: 16 }}>
-        <CardFull value={totalProducts} label="Total de produtos" />
+        <CardFull value={"R$ 10,00"} label="Total de produtos" />
         <View style={{ flexDirection: "row", gap: 16 }}>
           <Card
-            value={totalSales}
+            value={"R$ 100,00"}
             label="Total de vendas"
             percentage={percentageSales}
           />
           <Card
-            value={totalProfit}
+            value={"R$ 50,00"}
             label="Total de lucro"
             percentage={percentageProfit}
           />

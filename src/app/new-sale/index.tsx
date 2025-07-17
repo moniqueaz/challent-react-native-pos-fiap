@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { FormTemplate } from "@/components/form-template";
-import { Alert } from "react-native";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from "react-native";
 
 const NewSalePage = () => {
   const productOptions = [
@@ -88,70 +93,77 @@ const NewSalePage = () => {
   };
 
   return (
-    <FormTemplate
-      title="Nova Venda"
-      inputs={[
-        {
-          label: "Produto - Safra:",
-          placeholder: "Selecione o produto e a safra",
-          name: "productHarvest",
-          value: form.productHarvest,
-          type: "dropdown",
-          options: productOptions.map(
-            (option) => `${option.productName} - ${option.harvest}`
-          ),
-        },
-        {
-          label: "Quantidade:",
-          placeholder: "Quantidade (automático)",
-          name: "quantity",
-          value: form.quantity,
-          keyboardType: "numeric",
-          disabled: true,
-        },
-        {
-          label: "Valor Unitário:",
-          placeholder: "R$ 0,00",
-          name: "unitPrice",
-          value: form.unitPrice,
-          disabled: true,
-        },
-        {
-          label: "Valor de Venda por Unidade:",
-          placeholder: "Digite o valor de venda por unidade",
-          name: "saleUnitPrice",
-          value: form.saleUnitPrice,
-          keyboardType: "numeric",
-        },
-        {
-          label: "Lucro Total:",
-          placeholder: "Lucro total (automático)",
-          name: "totalProfit",
-          value: form.totalProfit,
-          disabled: true,
-        },
-        {
-          label: "Data da Venda:",
-          placeholder: "Selecione a data",
-          name: "saleDate",
-          value: form.saleDate,
-          type: "date",
-        },
-      ]}
-      onInputChange={handleInputChange}
-      buttons={[
-        {
-          text: "Cancelar",
-          onPress: () => Alert.alert("Cancelado!"),
-          variant: "cancel",
-        },
-        {
-          text: "Registrar Venda",
-          onPress: () => Alert.alert("Venda registrada com sucesso!"),
-          variant: "submit",
-        },
-      ]}
-    />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 30 : 30}
+    >
+      <ScrollView>
+        <FormTemplate
+          title="Nova Venda"
+          inputs={[
+            {
+              label: "Produto - Safra:",
+              placeholder: "Selecione o produto e a safra",
+              name: "productHarvest",
+              value: form.productHarvest,
+              type: "dropdown",
+              options: productOptions.map(
+                (option) => `${option.productName} - ${option.harvest}`
+              ),
+            },
+            {
+              label: "Quantidade:",
+              placeholder: "Quantidade (automático)",
+              name: "quantity",
+              value: form.quantity,
+              keyboardType: "numeric",
+              disabled: true,
+            },
+            {
+              label: "Valor Unitário:",
+              placeholder: "R$ 0,00",
+              name: "unitPrice",
+              value: form.unitPrice,
+              disabled: true,
+            },
+            {
+              label: "Valor de Venda por Unidade:",
+              placeholder: "Digite o valor de venda por unidade",
+              name: "saleUnitPrice",
+              value: form.saleUnitPrice,
+              keyboardType: "numeric",
+            },
+            {
+              label: "Lucro Total:",
+              placeholder: "Lucro total (automático)",
+              name: "totalProfit",
+              value: form.totalProfit,
+              disabled: true,
+            },
+            {
+              label: "Data da Venda:",
+              placeholder: "Selecione a data",
+              name: "saleDate",
+              value: form.saleDate,
+              type: "date",
+            },
+          ]}
+          onInputChange={handleInputChange}
+          buttons={[
+            {
+              text: "Cancelar",
+              onPress: () => Alert.alert("Cancelado!"),
+              variant: "cancel",
+            },
+            {
+              text: "Registrar Venda",
+              onPress: () => Alert.alert("Venda registrada com sucesso!"),
+              variant: "submit",
+            },
+          ]}
+        />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

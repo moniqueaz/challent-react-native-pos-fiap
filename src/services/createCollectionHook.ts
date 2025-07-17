@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCollection } from "@/hooks/useCollection";
+import { useAuth } from "@/context/AuthContext";
 
 export type CollectionOperations<T> = {
   data: T[];
@@ -16,6 +17,8 @@ export type CollectionOperations<T> = {
 export const createCollectionHook = <T = unknown>(collectionName: string) => {
   const collection = useCollection(collectionName);
   const [data, setData] = useState<T[]>([]);
+  const { user } = useAuth();
+  const { uid } = user || {};
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,6 +43,19 @@ export const createCollectionHook = <T = unknown>(collectionName: string) => {
     try {
       setError(null);
       return (await collection.getById(id)) as T | null;
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Erro desconhecido";
+      setError(errorMessage);
+      throw err;
+    }
+  };
+  const getByUid = async (uid: string): Promise<T | null> => {
+    try {
+      setError(null);
+      const result = (await collection.getByUid(uid)) as T | null;
+      setData(result as T[]);
+      return result;
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Erro desconhecido";
@@ -89,11 +105,11 @@ export const createCollectionHook = <T = unknown>(collectionName: string) => {
   };
 
   const refresh = async (): Promise<void> => {
-    await getAll();
+    await getById(uid || "");
   };
 
   useEffect(() => {
-    getAll();
+    getByUid(uid || "");
   }, []);
 
   return {
@@ -106,5 +122,6 @@ export const createCollectionHook = <T = unknown>(collectionName: string) => {
     update,
     delete: deleteItem,
     refresh,
+    getByUid,
   };
 };
