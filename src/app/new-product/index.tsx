@@ -3,6 +3,8 @@ import { FormTemplate } from "@/components/form-template";
 import { Alert } from "react-native";
 
 const NewProductPage = () => {
+  const fruitOptions = ["Maçã", "Banana", "Laranja", "Uva", "Manga"];
+
   const [form, setForm] = useState({
     productName: "",
     producedQuantity: "",
@@ -12,8 +14,21 @@ const NewProductPage = () => {
     harvest: "",
   });
 
+  const formatCurrency = (value: string): string => {
+    const numericValue = Number(value.replace(/\D/g, "")) / 100;
+    return numericValue.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+  };
+
   const handleInputChange = (field: string, value: string) => {
-    setForm({ ...form, [field]: value });
+    if (field === "price") {
+      const formattedValue = formatCurrency(value);
+      setForm({ ...form, [field]: formattedValue });
+    } else {
+      setForm({ ...form, [field]: value });
+    }
   };
 
   return (
@@ -22,9 +37,11 @@ const NewProductPage = () => {
       inputs={[
         {
           label: "Nome do produto:",
-          placeholder: "Digite o nome do produto",
+          placeholder: "Selecione o nome do produto",
           name: "productName",
           value: form.productName,
+          type: "dropdown",
+          options: fruitOptions,
         },
         {
           label: "Quantidade produzida:",
@@ -34,8 +51,8 @@ const NewProductPage = () => {
           keyboardType: "numeric",
         },
         {
-          label: "Valor:",
-          placeholder: "Digite o valor",
+          label: "Valor Unitário:",
+          placeholder: "Digite o valor unitário",
           name: "price",
           value: form.price,
           keyboardType: "numeric",
@@ -67,7 +84,11 @@ const NewProductPage = () => {
           onPress: () => Alert.alert("Cancelado!"),
           variant: "cancel",
         },
-        { text: "Adicionar", onPress: () => Alert.alert("Produto Salvo!") },
+        {
+          text: "Adicionar",
+          onPress: () => Alert.alert("Produto Salvo!"),
+          variant: "submit",
+        },
       ]}
     />
   );

@@ -19,6 +19,7 @@ type InputField = {
   type?: "text" | "date" | "dropdown";
   options?: string[];
   keyboardType?: "default" | "numeric" | "email-address";
+  disabled?: boolean;
 };
 
 type ButtonProps = {
@@ -54,6 +55,20 @@ export const FormTemplate = ({
       <Text style={styles.title}>{title}</Text>
       <View style={styles.inputContainer}>
         {inputs.map((input, index) => {
+          if (input.disabled) {
+            return (
+              <View key={index} style={styles.inputWrapper}>
+                <Text style={styles.label}>{input.label}</Text>
+                <TextInput
+                  placeholder={input.placeholder}
+                  value={input.value}
+                  editable={false}
+                  style={[styles.input, styles.disabledInput]}
+                />
+              </View>
+            );
+          }
+
           if (input.type === "date") {
             return (
               <View key={index} style={styles.inputWrapper}>
