@@ -16,5 +16,5 @@ type Users = {
 export const useUsers = () => {
   const { data } = createCollectionHook<Users>("users");
 
-  return data;
+  return data?.[0] || {};
 };

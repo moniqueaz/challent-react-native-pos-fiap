@@ -1,4 +1,6 @@
 import { createCollectionHook } from "@/services/createCollectionHook";
+import { useProductName } from "@/hooks/useProductName";
+import { useUsers } from "@/hooks/useUsers";
 
 type Product = {
   id: string;
@@ -15,7 +17,35 @@ type Product = {
 };
 
 export const useProduct = () => {
-  const { data } = createCollectionHook<Product>("product");
+  const { uid } = useUsers();
+  const { data, create } = createCollectionHook<Product>("product");
+  const productNames = useProductName();
 
-  return data;
+  interface CriarProdutoInput {
+    productName: string;
+    price: number;
+    producedQuantity: string;
+    productionDate: string;
+    harvest: string;
+    status: string;
+  }
+
+  const criarProduto = (product: CriarProdutoInput) => {
+    const newProduct: Omit<Product, "id"> = {
+      name: product.productName,
+      price: product.price,
+      amount: product.producedQuantity,
+      date: product.productionDate,
+      harvest: `${product.harvest} - ${new Date().getTime()}`,
+      id_product: "",
+      location: "Localização",
+      status: product.status,
+      uid,
+      value: product.price,
+    };
+
+    return create(newProduct);
+  };
+
+  return { productNames, criarProduto };
 };
