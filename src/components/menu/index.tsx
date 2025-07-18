@@ -19,6 +19,12 @@ export const Menu = () => {
 
   const menuItems: MenuItem[] = [
     {
+      title: "Home",
+      icon: "home",
+      url: "/(tabs)",
+      visible: !!user,
+    },
+    {
       title: "Profile",
       icon: "person",
       url: "/profile",
@@ -37,12 +43,6 @@ export const Menu = () => {
       visible: !user,
     },
     {
-      title: "Logout",
-      icon: "logout",
-      action: logout,
-      visible: !!user,
-    },
-    {
       title: "Cadastrar Produto",
       icon: "add-circle-outline",
       url: "/new-product",
@@ -58,6 +58,12 @@ export const Menu = () => {
       title: "Atualizar Status",
       icon: "update",
       url: "/update-status",
+      visible: !!user,
+    },
+    {
+      title: "Logout",
+      icon: "logout",
+      action: logout,
       visible: !!user,
     },
   ];

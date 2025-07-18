@@ -6,6 +6,7 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
+import { router } from "expo-router";
 
 const NewSalePage = () => {
   const productOptions = [
@@ -92,6 +93,17 @@ const NewSalePage = () => {
     }
   };
 
+  const handleClearForm = () => {
+    setForm({
+      productHarvest: "",
+      quantity: "",
+      unitPrice: "",
+      saleUnitPrice: "",
+      saleDate: "",
+      totalProfit: "",
+    });
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -152,12 +164,15 @@ const NewSalePage = () => {
           buttons={[
             {
               text: "Cancelar",
-              onPress: () => Alert.alert("Cancelado!"),
+              onPress: () => router.push("/(tabs)"),
               variant: "cancel",
             },
             {
               text: "Registrar Venda",
-              onPress: () => Alert.alert("Venda registrada com sucesso!"),
+              onPress: () => {
+                Alert.alert("Venda registrada com sucesso!");
+                handleClearForm();
+              },
               variant: "submit",
             },
           ]}
