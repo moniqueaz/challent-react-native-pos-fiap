@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FormTemplate } from "@/components/form-template";
 import { Alert } from "react-native";
+import { router } from "expo-router";
 
 const UpdateStatusPage = () => {
   const productOptions = ["Produto A", "Produto B", "Produto C", "Produto D"];
@@ -9,6 +10,13 @@ const UpdateStatusPage = () => {
     product: "",
     status: "",
   });
+
+  const handleClearForm = () => {
+    setForm({
+      product: "",
+      status: "",
+    });
+  };
 
   const handleInputChange = (field: string, value: string) => {
     setForm({ ...form, [field]: value });
@@ -39,10 +47,17 @@ const UpdateStatusPage = () => {
       buttons={[
         {
           text: "Cancelar",
-          onPress: () => Alert.alert("Cancelado!"),
+          onPress: () => router.push("/(tabs)"),
           variant: "cancel",
         },
-        { text: "Atualizar", onPress: () => Alert.alert("Status Atualizado!") },
+        {
+          text: "Atualizar",
+          onPress: () => {
+            Alert.alert("Status Atualizado!");
+            handleClearForm();
+          },
+          variant: "submit",
+        },
       ]}
     />
   );

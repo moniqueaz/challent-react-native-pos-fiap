@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import { useProduct } from "@/hooks/useProduct";
+import { router } from "expo-router";
 
 const NewProductPage = () => {
   const { productNames, criarProduto } = useProduct();
@@ -40,6 +41,18 @@ const NewProductPage = () => {
       return setForm({ ...form, [field]: formattedValue });
     }
     setForm({ ...form, [field]: value });
+  };
+
+  const handleClearForm = () => {
+    setForm({
+      productName: "",
+      producedQuantity: "",
+      price: "",
+      productionDate: "",
+      address: "",
+      status: "",
+      harvest: "",
+    });
   };
 
   return (
@@ -106,7 +119,7 @@ const NewProductPage = () => {
           buttons={[
             {
               text: "Cancelar",
-              onPress: () => Alert.alert("Cancelado!"),
+              onPress: () => router.push("/(tabs)"),
               variant: "cancel",
             },
             {
@@ -115,6 +128,7 @@ const NewProductPage = () => {
                 console.log("form: ", form);
                 // criarProduto(form);
                 Alert.alert("Produto adicionado!");
+                handleClearForm();
               },
               variant: "submit",
             },
