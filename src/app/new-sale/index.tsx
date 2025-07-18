@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { useNewSales } from "@/hooks/useNewSales";
+import { formatCurrency } from "@/utils/formatter";
+import { calculateProfit, calculateTotalSale } from "./utils/calc";
 
 const NewSalePage = () => {
   const { products, createSales } = useNewSales();
@@ -15,7 +17,7 @@ const NewSalePage = () => {
     productName: product.name,
     harvest: product.harvest,
     quantity: product.amount,
-    unitPrice: product.price.toString(),
+    unitPrice: product.value,
     productId: product.id_product,
   }));
 
@@ -28,55 +30,6 @@ const NewSalePage = () => {
     totalProfit: "",
     totalSale: "",
   });
-
-  const formatCurrency = (value: string): string => {
-    const numericValue = Number(value.replace(/\D/g, "")) / 100;
-    return numericValue.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-  };
-
-  const calculateProfit = (
-    saleUnitPrice: string,
-    quantity: string,
-    unitPrice: string
-  ): string => {
-    const saleValue =
-      parseFloat(saleUnitPrice.replace(/[R$\s.]/g, "").replace(",", ".")) || 0;
-    const quantityValue = parseFloat(quantity) || 0;
-    const costValue =
-      parseFloat(unitPrice.replace(/[R$\s.]/g, "").replace(",", ".")) || 0;
-
-    if (isNaN(saleValue) || isNaN(quantityValue) || isNaN(costValue)) {
-      return "R$ 0,00";
-    }
-
-    const profit = saleValue * quantityValue - costValue * quantityValue;
-    return profit.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-  };
-
-  const calculateTotalSale = (
-    saleUnitPrice: string,
-    quantity: string
-  ): string => {
-    const saleValue =
-      parseFloat(saleUnitPrice.replace(/[R$\s.]/g, "").replace(",", ".")) || 0;
-    const quantityValue = parseFloat(quantity) || 0;
-
-    if (isNaN(saleValue) || isNaN(quantityValue)) {
-      return "R$ 0,00";
-    }
-
-    const totalSale = saleValue * quantityValue;
-    return totalSale.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-  };
 
   const handleInputChange = (field: string, value: string) => {
     if (field === "saleUnitPrice") {
@@ -91,7 +44,10 @@ const NewSalePage = () => {
         ),
         totalSale: calculateTotalSale(formattedValue, form.quantity),
       }));
-    } else if (field === "productHarvest") {
+      return;
+    }
+
+    if (field === "productHarvest") {
       const selectedProduct = productOptions.find(
         (option) => `${option.productName} - ${option.harvest}` === value
       );
@@ -113,9 +69,9 @@ const NewSalePage = () => {
           ),
         }));
       }
-    } else {
-      setForm({ ...form, [field]: value });
+      return;
     }
+    setForm({ ...form, [field]: value });
   };
 
   const handleClearForm = () => {
@@ -126,6 +82,7 @@ const NewSalePage = () => {
       saleUnitPrice: "",
       saleDate: "",
       totalProfit: "",
+      totalSale: "",
     });
   };
 
