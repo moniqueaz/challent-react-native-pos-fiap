@@ -55,6 +55,24 @@ const NewProductPage = () => {
     });
   };
 
+  const handleSubmitForm = () => {
+    const formattedForm = {
+      name: form.productName,
+      amount: Number(form.producedQuantity),
+      value: Number(form.value.replace(/\D/g, "")) / 100,
+      date: new Date(
+        form.productionDate.split("/").reverse().join("-")
+      ).toISOString(),
+      harvest: form.harvest,
+      location: form.address || "Fazenda do mato",
+      status: form.status,
+    };
+
+    criarProduto(formattedForm);
+    Alert.alert("Produto adicionado!");
+    handleClearForm();
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -118,7 +136,7 @@ const NewProductPage = () => {
               placeholder: "Digite a safra",
               name: "harvest",
               value: form.harvest,
-              keyboardType: "numeric",
+              keyboardType: "default",
               required: true,
             },
           ]}
@@ -131,11 +149,7 @@ const NewProductPage = () => {
             },
             {
               text: "Adicionar",
-              onPress: () => {
-                criarProduto(form);
-                Alert.alert("Produto adicionado!");
-                handleClearForm();
-              },
+              onPress: handleSubmitForm,
               variant: "submit",
             },
           ]}
@@ -144,5 +158,4 @@ const NewProductPage = () => {
     </KeyboardAvoidingView>
   );
 };
-
 export default NewProductPage;
