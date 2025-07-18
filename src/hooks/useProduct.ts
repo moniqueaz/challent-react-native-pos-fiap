@@ -2,10 +2,9 @@ import { createCollectionHook } from "@/services/createCollectionHook";
 import { useProductName } from "@/hooks/useProductName";
 import { useUsers } from "@/hooks/useUsers";
 
-type Product = {
+export type Product = {
   id: string;
   name: string;
-  price: number;
   amount: string;
   date: string;
   harvest: string;
@@ -23,7 +22,7 @@ export const useProduct = () => {
 
   interface CriarProdutoInput {
     productName: string;
-    price: number;
+    value: number;
     producedQuantity: string;
     productionDate: string;
     harvest: string;
@@ -33,7 +32,6 @@ export const useProduct = () => {
   const criarProduto = (product: CriarProdutoInput) => {
     const newProduct: Omit<Product, "id"> = {
       name: product.productName,
-      price: product.price,
       amount: product.producedQuantity,
       date: product.productionDate,
       harvest: `${product.harvest} - ${new Date().getTime()}`,
@@ -41,7 +39,7 @@ export const useProduct = () => {
       location: "Localização",
       status: product.status,
       uid,
-      value: product.price,
+      value: product.value,
     };
 
     return create(newProduct);

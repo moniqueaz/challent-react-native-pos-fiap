@@ -20,7 +20,7 @@ const NewProductPage = () => {
   const [form, setForm] = useState({
     productName: "",
     producedQuantity: "",
-    price: "",
+    value: "",
     productionDate: "",
     address: "",
     status: "",
@@ -36,7 +36,7 @@ const NewProductPage = () => {
   };
 
   const handleInputChange = (field: string, value: string) => {
-    if (field === "price") {
+    if (field === "value") {
       const formattedValue = formatCurrency(value);
       return setForm({ ...form, [field]: formattedValue });
     }
@@ -47,7 +47,7 @@ const NewProductPage = () => {
     setForm({
       productName: "",
       producedQuantity: "",
-      price: "",
+      value: "",
       productionDate: "",
       address: "",
       status: "",
@@ -82,8 +82,8 @@ const NewProductPage = () => {
             {
               label: "Valor Unitário:",
               placeholder: "Digite o valor unitário",
-              name: "price",
-              value: form.price,
+              name: "value",
+              value: form.value,
               keyboardType: "numeric",
             },
             {
@@ -125,8 +125,7 @@ const NewProductPage = () => {
             {
               text: "Adicionar",
               onPress: () => {
-                console.log("form: ", form);
-                // criarProduto(form);
+                criarProduto(form);
                 Alert.alert("Produto adicionado!");
                 handleClearForm();
               },

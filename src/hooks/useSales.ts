@@ -1,6 +1,6 @@
 import { createCollectionHook } from "@/services/createCollectionHook";
 
-type Sale = {
+export type Sale = {
   id: string;
   amount: number;
   date: string;

@@ -1,21 +1,13 @@
 import { createCollectionHook } from "@/services/createCollectionHook";
 import { useUsers } from "@/hooks/useUsers";
-
-type Sale = {
-  id: string;
-  amount: number;
-  date: string;
-  id_product: string;
-  price: number;
-  profit: number;
-  total_sale: number;
-};
+import { Sale } from "@/hooks/useSales";
+import { Product } from "@/hooks/useProduct";
 
 export const useNewSales = () => {
   const { uid } = useUsers();
-  const { data, create } = createCollectionHook<Sale>("sales");
+  const { create } = createCollectionHook<Sale>("sales");
   const { data: products, deleteByProductId } =
-    createCollectionHook<Sale>("product");
+    createCollectionHook<Product>("product");
 
   interface CreateSaleInput {
     quantity: number;
@@ -38,7 +30,6 @@ export const useNewSales = () => {
   }
 
   const createSales = (sale: CreateSaleInput) => {
-    console.log("sale: ", sale);
     const newSale: NewSale = {
       amount: sale.quantity,
       date: sale.saleDate,
