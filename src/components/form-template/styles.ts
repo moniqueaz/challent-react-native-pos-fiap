@@ -3,14 +3,16 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+
     backgroundColor: "#fff",
     justifyContent: "space-between",
   },
   title: {
     fontSize: 24,
     fontWeight: "700",
-    marginBottom: 32,
+    marginBottom: 18,
     textAlign: "center",
   },
   inputContainer: {
@@ -34,12 +36,20 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: "#ccc",
-    padding: 12,
+    padding: 8,
     fontSize: 14,
     backgroundColor: "#FAFAFA",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  inputError: {
+    borderColor: "red",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginTop: 4,
   },
   dateInput: {
     flexDirection: "row",

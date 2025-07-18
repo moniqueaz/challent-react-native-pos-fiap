@@ -71,6 +71,7 @@ const NewProductPage = () => {
               value: form.productName,
               type: "dropdown",
               options: productNames.map(({ name }) => name),
+              required: true,
             },
             {
               label: "Quantidade produzida:",
@@ -78,6 +79,7 @@ const NewProductPage = () => {
               name: "producedQuantity",
               value: form.producedQuantity,
               keyboardType: "numeric",
+              required: true,
             },
             {
               label: "Valor Unitário:",
@@ -85,6 +87,7 @@ const NewProductPage = () => {
               name: "value",
               value: form.value,
               keyboardType: "numeric",
+              required: true,
             },
             {
               label: "Data:",
@@ -92,12 +95,14 @@ const NewProductPage = () => {
               name: "productionDate",
               value: form.productionDate,
               type: "date",
+              required: true,
             },
             {
               label: "Endereço:",
               placeholder: "Digite o endereço",
               name: "address",
               value: form.address,
+              required: true,
             },
             {
               label: "Status:",
@@ -106,6 +111,7 @@ const NewProductPage = () => {
               value: form.status,
               type: "dropdown",
               options: statusOptions.map(({ name }) => name),
+              required: true,
             },
             {
               label: "Safra:",
@@ -113,6 +119,7 @@ const NewProductPage = () => {
               name: "harvest",
               value: form.harvest,
               keyboardType: "numeric",
+              required: true,
             },
           ]}
           onInputChange={handleInputChange}
