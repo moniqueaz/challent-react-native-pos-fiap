@@ -37,7 +37,7 @@ export const useProduct = () => {
       amount: product.producedQuantity,
       date: product.productionDate,
       harvest: `${product.harvest} - ${new Date().getTime()}`,
-      id_product: "",
+      id_product: new Date().getTime().toString(),
       location: "Localização",
       status: product.status,
       uid,
@@ -47,5 +47,5 @@ export const useProduct = () => {
     return create(newProduct);
   };
 
-  return { productNames, criarProduto };
+  return { data, productNames, criarProduto };
 };

@@ -19,7 +19,7 @@ const data = [
   ["Produto J", "11", "$24.00"],
 ];
 const Pages = () => {
-  const sales = useSales();
+  const { data: sales } = useSales();
   const totalProducts = sales?.reduce((acc, sale) => acc + sale?.amount, 0);
   const totalProfit = sales?.reduce((acc, sale) => acc + sale?.profit, 0);
   const totalSales = sales?.reduce((acc, sale) => acc + sale?.price, 0);

@@ -7,18 +7,17 @@ import {
   ScrollView,
 } from "react-native";
 import { router } from "expo-router";
+import { useNewSales } from "@/hooks/useNewSales";
 
 const NewSalePage = () => {
-  const productOptions = [
-    { productName: "Maçã", harvest: "2023", quantity: "50", unitPrice: "2.50" },
-    {
-      productName: "Banana",
-      harvest: "2022",
-      quantity: "100",
-      unitPrice: "1.80",
-    },
-    { productName: "Uva", harvest: "2023", quantity: "20", unitPrice: "5.00" },
-  ];
+  const { products, createSales } = useNewSales();
+  const productOptions = products.map((product) => ({
+    productName: product.name,
+    harvest: product.harvest,
+    quantity: product.amount,
+    unitPrice: product.price.toString(),
+    productId: product.id_product,
+  }));
 
   const [form, setForm] = useState({
     productHarvest: "",
@@ -27,6 +26,7 @@ const NewSalePage = () => {
     saleUnitPrice: "",
     saleDate: "",
     totalProfit: "",
+    totalSale: "",
   });
 
   const formatCurrency = (value: string): string => {
@@ -59,6 +59,25 @@ const NewSalePage = () => {
     });
   };
 
+  const calculateTotalSale = (
+    saleUnitPrice: string,
+    quantity: string
+  ): string => {
+    const saleValue =
+      parseFloat(saleUnitPrice.replace(/[R$\s.]/g, "").replace(",", ".")) || 0;
+    const quantityValue = parseFloat(quantity) || 0;
+
+    if (isNaN(saleValue) || isNaN(quantityValue)) {
+      return "R$ 0,00";
+    }
+
+    const totalSale = saleValue * quantityValue;
+    return totalSale.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+  };
+
   const handleInputChange = (field: string, value: string) => {
     if (field === "saleUnitPrice") {
       const formattedValue = formatCurrency(value);
@@ -70,6 +89,7 @@ const NewSalePage = () => {
           form.quantity,
           form.unitPrice
         ),
+        totalSale: calculateTotalSale(formattedValue, form.quantity),
       }));
     } else if (field === "productHarvest") {
       const selectedProduct = productOptions.find(
@@ -77,6 +97,7 @@ const NewSalePage = () => {
       );
       if (selectedProduct) {
         setForm((prevForm) => ({
+          ...selectedProduct,
           ...prevForm,
           productHarvest: value,
           quantity: selectedProduct.quantity,
@@ -85,6 +106,10 @@ const NewSalePage = () => {
             form.saleUnitPrice,
             selectedProduct.quantity,
             selectedProduct.unitPrice
+          ),
+          totalSale: calculateTotalSale(
+            form.saleUnitPrice,
+            selectedProduct.quantity
           ),
         }));
       }
@@ -153,6 +178,13 @@ const NewSalePage = () => {
               disabled: true,
             },
             {
+              label: "Total da Venda:",
+              placeholder: "Total da venda (automático)",
+              name: "totalSale",
+              value: form.totalSale,
+              disabled: true,
+            },
+            {
               label: "Data da Venda:",
               placeholder: "Selecione a data",
               name: "saleDate",
@@ -170,8 +202,9 @@ const NewSalePage = () => {
             {
               text: "Registrar Venda",
               onPress: () => {
-                Alert.alert("Venda registrada com sucesso!");
+                createSales(form);
                 handleClearForm();
+                Alert.alert("Venda registrada com sucesso!");
               },
               variant: "submit",
             },
