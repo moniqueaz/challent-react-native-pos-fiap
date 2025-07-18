@@ -35,6 +35,7 @@ export const useProduct = () => {
       ...product,
       uid,
       id_product: new Date().getTime().toString(),
+      harvest: `${product.harvest} - ${new Date().getTime()}`,
     };
 
     return create(newProduct);
