@@ -104,6 +104,7 @@ const NewSalePage = () => {
               options: productOptions.map(
                 (option) => `${option.productName} - ${option.harvest}`
               ),
+              required: true,
             },
             {
               label: "Quantidade:",
@@ -126,6 +127,7 @@ const NewSalePage = () => {
               name: "saleUnitPrice",
               value: form.saleUnitPrice,
               keyboardType: "numeric",
+              required: true,
             },
             {
               label: "Lucro Total:",
@@ -147,6 +149,7 @@ const NewSalePage = () => {
               name: "saleDate",
               value: form.saleDate,
               type: "date",
+              required: true,
             },
           ]}
           onInputChange={handleInputChange}

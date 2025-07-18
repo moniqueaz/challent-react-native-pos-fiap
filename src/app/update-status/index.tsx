@@ -33,6 +33,7 @@ const UpdateStatusPage = () => {
           value: form.product,
           type: "dropdown",
           options: productOptions,
+          required: true,
         },
         {
           label: "Status:",
@@ -41,6 +42,7 @@ const UpdateStatusPage = () => {
           value: form.status,
           type: "dropdown",
           options: ["Disponível", "Esgotado", "Em produção"],
+          required: true,
         },
       ]}
       onInputChange={handleInputChange}

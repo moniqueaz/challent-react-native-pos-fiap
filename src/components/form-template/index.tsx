@@ -10,6 +10,7 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { styles } from "./styles";
 import { MaterialIcons } from "@expo/vector-icons";
+import { validateFields } from "@/utils/validationUtils";
 
 type InputField = {
   label: string;
@@ -20,6 +21,7 @@ type InputField = {
   options?: string[];
   keyboardType?: "default" | "numeric" | "email-address";
   disabled?: boolean;
+  required?: boolean;
 };
 
 type ButtonProps = {
@@ -47,6 +49,7 @@ export const FormTemplate = ({
   const [currentDropdownOptions, setCurrentDropdownOptions] = useState<
     string[]
   >([]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [currentDropdownField, setCurrentDropdownField] = useState("");
 
@@ -74,7 +77,11 @@ export const FormTemplate = ({
               <View key={index} style={styles.inputWrapper}>
                 <Text style={styles.label}>{input.label}</Text>
                 <TouchableOpacity
-                  style={[styles.input, styles.dateInput]}
+                  style={[
+                    styles.input,
+                    styles.dateInput,
+                    errors[input.name] && styles.inputError,
+                  ]}
                   onPress={() => {
                     setCurrentDateField(input.name);
                     setShowDatePicker(true);
@@ -83,6 +90,9 @@ export const FormTemplate = ({
                   <Text>{input.value || input.placeholder}</Text>
                   <MaterialIcons name="calendar-today" size={20} color="#555" />
                 </TouchableOpacity>
+                {errors[input.name] && (
+                  <Text style={styles.errorText}>{errors[input.name]}</Text>
+                )}
               </View>
             );
           }
@@ -92,7 +102,10 @@ export const FormTemplate = ({
               <View key={index} style={styles.inputWrapper}>
                 <Text style={styles.label}>{input.label}</Text>
                 <TouchableOpacity
-                  style={[styles.input, styles.dropdownInput]}
+                  style={[
+                    styles.input,
+                    errors[input.name] && styles.inputError,
+                  ]}
                   onPress={() => {
                     setCurrentDropdownField(input.name);
                     setCurrentDropdownOptions(input.options || []);
@@ -106,6 +119,9 @@ export const FormTemplate = ({
                     color="#555"
                   />
                 </TouchableOpacity>
+                {errors[input.name] && (
+                  <Text style={styles.errorText}>{errors[input.name]}</Text>
+                )}
               </View>
             );
           }
@@ -117,9 +133,12 @@ export const FormTemplate = ({
                 placeholder={input.placeholder}
                 value={input.value}
                 onChangeText={(value) => onInputChange(input.name, value)}
-                style={styles.input}
+                style={[styles.input, errors[input.name] && styles.inputError]}
                 keyboardType={input.keyboardType || "default"}
               />
+              {errors[input.name] && (
+                <Text style={styles.errorText}>{errors[input.name]}</Text>
+              )}
             </View>
           );
         })}
@@ -129,7 +148,15 @@ export const FormTemplate = ({
         {buttons.map((button, index) => (
           <TouchableOpacity
             key={index}
-            onPress={button.onPress}
+            onPress={() => {
+              if (
+                button.variant === "submit" &&
+                !validateFields(inputs, setErrors)
+              ) {
+                return;
+              }
+              button.onPress();
+            }}
             style={[
               styles.button,
               button.variant === "cancel"
