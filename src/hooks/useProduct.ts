@@ -8,6 +8,7 @@ export type Product = {
   amount: number;
   date: string;
   harvest: string;
+  id_product: string;
   location: string;
   status: string;
   uid: string;
@@ -33,6 +34,7 @@ export const useProduct = () => {
     const newProduct: Omit<Product, "id"> = {
       ...product,
       uid,
+      id_product: new Date().getTime().toString(),
     };
 
     return create(newProduct);

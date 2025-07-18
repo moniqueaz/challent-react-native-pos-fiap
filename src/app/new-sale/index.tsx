@@ -11,6 +11,16 @@ import { useNewSales } from "@/hooks/useNewSales";
 import { formatCurrency } from "@/utils/formatter";
 import { calculateProfit, calculateTotalSale } from "./utils/calc";
 
+type FormState = {
+  productHarvest: string;
+  quantity: string;
+  unitPrice: string;
+  saleUnitPrice: string;
+  saleDate: string;
+  totalProfit: string;
+  totalSale: string;
+};
+
 const NewSalePage = () => {
   const { products, createSales } = useNewSales();
   const productOptions = products.map((product) => ({
@@ -21,7 +31,7 @@ const NewSalePage = () => {
     productId: product.id_product,
   }));
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormState>({
     productHarvest: "",
     quantity: "",
     unitPrice: "",
@@ -39,10 +49,10 @@ const NewSalePage = () => {
         saleUnitPrice: formattedValue,
         totalProfit: calculateProfit(
           formattedValue,
-          form.quantity,
-          form.unitPrice
+          prev.quantity,
+          prev.unitPrice
         ),
-        totalSale: calculateTotalSale(formattedValue, form.quantity),
+        totalSale: calculateTotalSale(formattedValue, prev.quantity),
       }));
       return;
     }
@@ -53,19 +63,18 @@ const NewSalePage = () => {
       );
       if (selectedProduct) {
         setForm((prevForm) => ({
-          ...selectedProduct,
           ...prevForm,
           productHarvest: value,
-          quantity: selectedProduct.quantity,
-          unitPrice: formatCurrency(selectedProduct.unitPrice),
+          quantity: selectedProduct.quantity.toString(),
+          unitPrice: formatCurrency(selectedProduct.unitPrice.toString()),
           totalProfit: calculateProfit(
-            form.saleUnitPrice,
-            selectedProduct.quantity,
-            selectedProduct.unitPrice
+            prevForm.saleUnitPrice,
+            selectedProduct.quantity.toString(),
+            selectedProduct.unitPrice.toString()
           ),
           totalSale: calculateTotalSale(
-            form.saleUnitPrice,
-            selectedProduct.quantity
+            prevForm.saleUnitPrice,
+            selectedProduct.quantity.toString()
           ),
         }));
       }
@@ -84,6 +93,27 @@ const NewSalePage = () => {
       totalProfit: "",
       totalSale: "",
     });
+  };
+
+  const handleSubmitForm = () => {
+    const formattedForm = {
+      quantity: Number(form.quantity) || 0,
+      saleDate: new Date(
+        form.saleDate.split("/").reverse().join("-")
+      ).toISOString(),
+      productId:
+        productOptions.find(
+          (option) =>
+            `${option.productName} - ${option.harvest}` === form.productHarvest
+        )?.productId ?? "",
+      unitPrice: Number(form.unitPrice?.replace(/\D/g, "") || "0") / 100,
+      totalProfit: Number(form.totalProfit?.replace(/\D/g, "") || "0") / 100,
+      totalSale: Number(form.totalSale?.replace(/\D/g, "") || "0") / 100,
+      uid: "",
+    };
+    createSales(formattedForm);
+    Alert.alert("Venda registrada com sucesso!");
+    handleClearForm();
   };
 
   return (
@@ -161,11 +191,7 @@ const NewSalePage = () => {
             },
             {
               text: "Registrar Venda",
-              onPress: () => {
-                createSales(form);
-                handleClearForm();
-                Alert.alert("Venda registrada com sucesso!");
-              },
+              onPress: handleSubmitForm,
               variant: "submit",
             },
           ]}
