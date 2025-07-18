@@ -13,5 +13,5 @@ type Sale = {
 export const useSales = () => {
   const { data } = createCollectionHook<Sale>("sales");
 
-  return data;
+  return { data };
 };

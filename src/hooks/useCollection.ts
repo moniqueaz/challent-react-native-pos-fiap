@@ -57,5 +57,16 @@ export const useCollection = (name: string) => {
       }));
       return result;
     },
+    deleteByProductId: async (id: string) => {
+      const q = query(contextCollection, where("id_product", "==", id));
+      const snapshot = await getDocs(q);
+
+      const deletePromises = snapshot.docs.map((docSnapshot) =>
+        deleteDoc(doc(contextCollection, docSnapshot.id))
+      );
+
+      await Promise.all(deletePromises);
+      return snapshot.docs.length; // retorna quantos documentos foram deletados
+    },
   };
 };
