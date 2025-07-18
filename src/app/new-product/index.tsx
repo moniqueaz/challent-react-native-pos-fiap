@@ -8,14 +8,10 @@ import {
 } from "react-native";
 import { useProduct } from "@/hooks/useProduct";
 import { router } from "expo-router";
+import { formatCurrency } from "@/utils/formatter";
 
 const NewProductPage = () => {
-  const { productNames, criarProduto } = useProduct();
-  const statusOptions = [
-    { name: "Aguardando" },
-    { name: "Em produção" },
-    { name: "Já colhido" },
-  ];
+  const { productNames, criarProduto, statusOptions } = useProduct();
 
   const [form, setForm] = useState({
     productName: "",
@@ -26,14 +22,6 @@ const NewProductPage = () => {
     status: "",
     harvest: "",
   });
-
-  const formatCurrency = (value: string): string => {
-    const numericValue = Number(value.replace(/\D/g, "")) / 100;
-    return numericValue.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-  };
 
   const handleInputChange = (field: string, value: string) => {
     if (field === "value") {
@@ -105,7 +93,7 @@ const NewProductPage = () => {
               name: "status",
               value: form.status,
               type: "dropdown",
-              options: statusOptions.map(({ name }) => name),
+              options: statusOptions.map((name) => name),
             },
             {
               label: "Safra:",

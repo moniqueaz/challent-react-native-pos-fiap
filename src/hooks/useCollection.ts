@@ -68,5 +68,14 @@ export const useCollection = (name: string) => {
       await Promise.all(deletePromises);
       return snapshot.docs.length; // retorna quantos documentos foram deletados
     },
+    updateByProductId: async (id: string, data: Record<string, any>) => {
+      const q = query(contextCollection, where("id_product", "==", id));
+      const snapshot = await getDocs(q);
+      const updatePromises = snapshot.docs.map((docSnapshot) =>
+        setDoc(doc(contextCollection, docSnapshot.id), data, { merge: true })
+      );
+      await Promise.all(updatePromises);
+      return snapshot.docs.length;
+    },
   };
 };
