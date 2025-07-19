@@ -13,6 +13,7 @@ const Pages = () => {
   const { productMapping } = useProduct();
 
   console.log("Sales Data:", sales);
+  const totalTransactions = sales.length || 0;
 
   const totalProducts =
     sales?.reduce((acc, sale) => acc + (sale?.amount || 0), 0) || 0;
@@ -25,9 +26,10 @@ const Pages = () => {
     totalProfit && totalSales
       ? ((totalProfit / totalSales) * 100).toFixed(2)
       : "0.00";
-  const percentageSales =
+
+  const averageSalesPerProduct =
     totalSales && totalProducts
-      ? ((totalSales / totalProducts) * 100).toFixed(2)
+      ? (totalSales / totalProducts).toFixed(2)
       : "0.00";
 
   const barChartData = Object.keys(salesByProduct || {}).map((productId) => {
@@ -49,21 +51,17 @@ const Pages = () => {
   return (
     <ScrollView>
       <View style={{ flex: 1, padding: 16, gap: 16 }}>
-        <CardFull
-          value={`R$ ${totalSales.toFixed(2)}`}
-          label="Total de Vendas"
-        />
-
+        <CardFull value={`${totalTransactions}`} label="Total de Transações" />
         <View style={{ flexDirection: "row", gap: 16 }}>
           <Card
             value={`R$ ${totalSales.toFixed(2)}`}
             label="Total de Vendas"
-            percentage={percentageSales}
+            info={`Preço Médio: R$ ${averageSalesPerProduct}`}
           />
           <Card
             value={`R$ ${totalProfit.toFixed(2)}`}
             label="Lucro Total"
-            percentage={percentageProfit}
+            percentage={`Lucro: ${percentageProfit}%`}
           />
         </View>
         <Section title="Lucro Por Produto">

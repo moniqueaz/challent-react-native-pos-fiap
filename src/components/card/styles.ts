@@ -35,6 +35,11 @@ export const styles = StyleSheet.create({
     color: colors.green[400],
     fontWeight: "600",
   },
+  infoText: {
+    fontSize: 12,
+    fontWeight: "600",
+    marginTop: 4,
+  },
 });
 
 export default styles;

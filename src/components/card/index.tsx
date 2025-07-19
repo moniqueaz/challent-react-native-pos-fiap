@@ -8,11 +8,12 @@ type Card = {
   value: string;
   label: string;
   percentage?: string;
+  info?: string;
 };
 
-export const Card: FC<Card> = ({ value, label, percentage }) => {
+export const Card: FC<Card> = ({ value, label, percentage, info }) => {
   if (!value || !label) {
-    return null; // Return null if value or label is not provided
+    return null;
   }
 
   return (
@@ -27,6 +28,13 @@ export const Card: FC<Card> = ({ value, label, percentage }) => {
             size={18}
             color={colors.green[400]}
           />
+        </View>
+      )}
+      {info && (
+        <View style={styles.iconContainer}>
+          <Text style={[styles.infoText, { color: colors.blue[400] }]}>
+            {info}
+          </Text>
         </View>
       )}
     </View>
