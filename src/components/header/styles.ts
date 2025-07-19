@@ -6,8 +6,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     paddingTop: 40,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "space-between",
     flexDirection: "row",
     height: 90,
   },
@@ -21,6 +21,11 @@ export const styles = StyleSheet.create({
     marginHorizontal: 20,
     height: "auto",
     width: "100%",
+  },
+  logo: {
+    width: 100,
+    height: 40,
+    resizeMode: "contain",
   },
 });
 

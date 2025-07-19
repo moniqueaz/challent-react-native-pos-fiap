@@ -1,4 +1,4 @@
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Input } from "@/components/input";
 import { Menu } from "@/components/menu";
@@ -9,7 +9,7 @@ export const Header = () => {
   return (
     <View style={styles.container}>
       <Menu />
-      <Input style={styles.input} placeholder="Search" />
+      <Image source={require("@/assets/logo.png")} style={styles.logo} />
       <TouchableOpacity onPress={() => alert("Notifications")}>
         <MaterialIcons name="notifications" size={24} color="black" />
       </TouchableOpacity>
