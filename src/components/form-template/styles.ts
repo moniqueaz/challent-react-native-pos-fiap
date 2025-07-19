@@ -56,6 +56,23 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  checkboxContainer: {
+    flexDirection: "row",
+    gap: 8,
+    paddingVertical: 4,
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 4,
+    backgroundColor: "#fff",
+  },
+  checkboxChecked: {
+    backgroundColor: "#3F9D61",
+    borderColor: "#3F9D61",
+  },
   dropdownInput: {
     flexDirection: "row",
     alignItems: "center",

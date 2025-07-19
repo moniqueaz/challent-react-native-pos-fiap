@@ -55,6 +55,12 @@ export const Menu = () => {
       visible: !!user,
     },
     {
+      title: "Cadastrar Metas",
+      icon: "flag",
+      url: "/new-goal",
+      visible: !!user,
+    },
+    {
       title: "Atualizar Status",
       icon: "update",
       url: "/update-status",
