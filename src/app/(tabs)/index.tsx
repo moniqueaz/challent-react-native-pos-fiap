@@ -12,7 +12,6 @@ const Pages = () => {
   const { data: sales, salesByProduct } = useSales();
   const { productMapping } = useProduct();
 
-  console.log("Sales Data:", sales);
   const totalTransactions = sales.length || 0;
 
   const totalProducts =
@@ -33,7 +32,7 @@ const Pages = () => {
       : "0.00";
 
   const barChartData = Object.keys(salesByProduct || {}).map((productId) => {
-    const product = productMapping[productId] || `Produto ${productId}`;
+    const product = productMapping[productId] || `Produto - ${productId}`;
     const { totalProfit } = salesByProduct[productId];
     return {
       value: totalProfit || 0,

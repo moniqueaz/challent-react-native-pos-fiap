@@ -16,9 +16,11 @@ export const Card: FC<Card> = ({ value, label, percentage, info }) => {
     return null;
   }
 
+  const valueStyle = [styles.bigNumber, value.length >= 10 && { fontSize: 18 }];
+
   return (
     <View style={styles.container}>
-      <Text style={styles.bigNumber}>{value}</Text>
+      <Text style={valueStyle}>{value}</Text>
       <Text style={styles.smallText}>{label}</Text>
       {percentage && (
         <View style={styles.iconContainer}>

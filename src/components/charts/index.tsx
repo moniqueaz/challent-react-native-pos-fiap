@@ -15,12 +15,12 @@ const Bar = ({
       <ScrollView>
         <BarChart
           data={data}
-          barWidth={8}
+          barWidth={14}
           spacing={24}
           roundedTop
           roundedBottom={false}
-          xAxisThickness={0}
-          yAxisThickness={0}
+          xAxisThickness={1}
+          yAxisThickness={1}
           yAxisTextStyle={{ color: colors.gray[400] }}
           noOfSections={6}
           maxValue={120}
