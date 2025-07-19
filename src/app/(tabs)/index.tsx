@@ -5,57 +5,75 @@ import { Section } from "@/components/section";
 import { Charts } from "@/components/charts";
 import { Table } from "@/components/table";
 import { useSales } from "@/hooks/useSales";
+import { useProduct } from "@/hooks/useProduct";
+import { colors } from "@/styles/colors";
 
-const data = [
-  ["Produto A", "10", "$20.00"],
-  ["Produto B", "5", "$15.00"],
-  ["Produto C", "8", "$30.00"],
-  ["Produto D", "12", "$25.00"],
-  ["Produto E", "7", "$18.00"],
-  ["Produto F", "3", "$22.00"],
-  ["Produto G", "9", "$27.00"],
-  ["Produto H", "4", "$19.00"],
-  ["Produto I", "6", "$21.00"],
-  ["Produto J", "11", "$24.00"],
-];
 const Pages = () => {
-  const { data: sales } = useSales();
-  const totalProducts = sales?.reduce((acc, sale) => acc + sale?.amount, 0);
-  const totalProfit = sales?.reduce((acc, sale) => acc + sale?.profit, 0);
-  const totalSales = sales?.reduce((acc, sale) => acc + sale?.price, 0);
+  const { data: sales, salesByProduct } = useSales();
+  const { productMapping } = useProduct();
+
+  console.log("Sales Data:", sales);
+
+  const totalProducts =
+    sales?.reduce((acc, sale) => acc + (sale?.amount || 0), 0) || 0;
+  const totalProfit =
+    sales?.reduce((acc, sale) => acc + (sale?.profit || 0), 0) || 0;
+  const totalSales =
+    sales?.reduce((acc, sale) => acc + (sale?.total_sale || 0), 0) || 0;
 
   const percentageProfit =
-    (!!totalProfit &&
-      !!totalSales &&
-      ((totalProfit / totalSales) * 100).toFixed(2)) ||
-    "0.00";
+    totalProfit && totalSales
+      ? ((totalProfit / totalSales) * 100).toFixed(2)
+      : "0.00";
   const percentageSales =
-    (!!totalSales &&
-      !!totalProducts &&
-      ((totalSales / totalProducts) * 100).toFixed(2)) ||
-    "0.00";
+    totalSales && totalProducts
+      ? ((totalSales / totalProducts) * 100).toFixed(2)
+      : "0.00";
+
+  const barChartData = Object.keys(salesByProduct || {}).map((productId) => {
+    const product = productMapping[productId] || `Produto ${productId}`;
+    const { totalProfit } = salesByProduct[productId];
+    return {
+      value: totalProfit || 0,
+      label: product,
+      frontColor: colors.blue[200],
+    };
+  });
+
+  const tableData = Object.keys(salesByProduct || {}).map((productId) => {
+    const product = productMapping[productId] || `Produto ${productId}`;
+    const { totalAmount, totalSales } = salesByProduct[productId];
+    return [product, totalAmount.toString(), `R$ ${totalSales.toFixed(2)}`];
+  });
 
   return (
     <ScrollView>
       <View style={{ flex: 1, padding: 16, gap: 16 }}>
-        <CardFull value={"R$ 10,00"} label="Total de produtos" />
+        <CardFull
+          value={`R$ ${totalSales.toFixed(2)}`}
+          label="Total de Vendas"
+        />
+
         <View style={{ flexDirection: "row", gap: 16 }}>
           <Card
-            value={"R$ 100,00"}
-            label="Total de vendas"
+            value={`R$ ${totalSales.toFixed(2)}`}
+            label="Total de Vendas"
             percentage={percentageSales}
           />
           <Card
-            value={"R$ 50,00"}
-            label="Total de lucro"
+            value={`R$ ${totalProfit.toFixed(2)}`}
+            label="Lucro Total"
             percentage={percentageProfit}
           />
         </View>
         <Section title="Lucro Por Produto">
-          <Charts.Bar />
+          <Charts.Bar data={barChartData} />
         </Section>
         <Section title="Produtos em Lote">
-          <Table header={["Produto", "Quantidade", "Preço"]} data={data} />
+          <Table
+            header={["Produto", "Quantidade", "Preço Total"]}
+            data={tableData}
+          />
         </Section>
       </View>
     </ScrollView>
