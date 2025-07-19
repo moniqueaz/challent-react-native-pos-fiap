@@ -1,6 +1,6 @@
 import { createCollectionHook } from "@/services/createCollectionHook";
 
-type Users = {
+export type User = {
   id: string;
   criadoEm: string;
   dataNascimento: string;
@@ -14,7 +14,19 @@ type Users = {
 };
 
 export const useUsers = () => {
-  const { data } = createCollectionHook<Users>("users");
+  const { data, update, refresh } = createCollectionHook<User>("users");
 
-  return data?.[0] || {};
+  const user = data?.[0];
+
+  const updateUser = async (updatedData: Partial<User>) => {
+    if (!user) throw new Error("Usuário não encontrado");
+
+    await update(user.id, updatedData);
+    await refresh();
+  };
+
+  return {
+    ...user,
+    updateUser,
+  };
 };

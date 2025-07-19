@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import {
   View,
   Image,
@@ -7,22 +7,15 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
+  TextInput,
 } from "react-native";
 import MaskInput, { MaskInputProps, Masks } from "react-native-mask-input";
-
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 import { colors } from "@/styles/colors";
-
-const profile = {
-  image: "@/assets/profile.jpg",
-  name: "Jessica Sabino",
-  email: "enos.bogisich@orland.tv",
-  birthDate: "10-04-1980",
-  phone: "11987655678",
-  address: "Rua dos Bobos",
-};
+import { useUsers } from "@/hooks/useUsers";
 
 type ProfileProps = {
   isEditMode?: boolean;
@@ -34,24 +27,67 @@ const EditInput = ({
   onChangeText,
   mask,
   ...props
-}: MaskInputProps) => {
-  return (
-    <MaskInput
-      style={styles.input}
-      placeholder={placeholder}
-      value={value}
-      onChangeText={onChangeText}
-      mask={mask}
-      {...props}
-    />
-  );
-};
+}: MaskInputProps) => (
+  <MaskInput
+    style={styles.input}
+    placeholder={placeholder}
+    value={value}
+    onChangeText={onChangeText}
+    mask={mask}
+    {...props}
+  />
+);
 
 export const Profile: FC<ProfileProps> = ({ isEditMode }) => {
+  const {
+    nome,
+    sobrenome,
+    email,
+    dataNascimento,
+    numero,
+    logradouro,
+    urlFotoPerfil,
+    updateUser,
+  } = useUsers();
+
   const [isEditing, setIsEditing] = useState(isEditMode || false);
-  const [birthDate, setBirthDate] = useState(profile.birthDate);
-  const [phone, setPhone] = useState(profile.phone);
-  const [address, setAddress] = useState(profile.address);
+  const [name, setName] = useState(nome || "");
+  const [emailState, setEmailState] = useState(email || "");
+  const [birthDate, setBirthDate] = useState(dataNascimento || "");
+  const [phone, setPhone] = useState(numero || "");
+  const [address, setAddress] = useState(logradouro || "");
+
+  useEffect(() => {
+    setName(nome || "");
+    setEmailState(email || "");
+    setBirthDate(dataNascimento || "");
+    setPhone(numero || "");
+    setAddress(logradouro || "");
+  }, [nome, sobrenome, email, dataNascimento, numero, logradouro]);
+
+  const handleSave = async () => {
+    try {
+      await updateUser({
+        nome: name,
+        email: emailState,
+        dataNascimento: birthDate,
+        numero: phone,
+        logradouro: address,
+      });
+
+      setName(name);
+      setEmailState(emailState);
+      setBirthDate(birthDate);
+      setPhone(phone);
+      setAddress(address);
+
+      setIsEditing(false);
+      Alert.alert("Sucesso", "Perfil atualizado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao atualizar perfil:", error);
+      Alert.alert("Erro", "Não foi possível atualizar o perfil.");
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -62,7 +98,9 @@ export const Profile: FC<ProfileProps> = ({ isEditMode }) => {
         <View style={styles.container}>
           <View style={styles.header}>
             <View style={styles.editIcon}>
-              <TouchableOpacity onPress={() => setIsEditing(!isEditing)}>
+              <TouchableOpacity
+                onPress={isEditing ? handleSave : () => setIsEditing(true)}
+              >
                 <MaterialIcons
                   name={isEditing ? "save" : "edit-square"}
                   size={24}
@@ -71,20 +109,48 @@ export const Profile: FC<ProfileProps> = ({ isEditMode }) => {
               </TouchableOpacity>
             </View>
             <Image
-              source={require("@/assets/profile.jpg")}
+              source={
+                urlFotoPerfil
+                  ? { uri: urlFotoPerfil }
+                  : require("@/assets/profile.jpg")
+              }
               style={styles.image}
             />
-            <Text style={styles.name}>{profile.name}</Text>
+            {!isEditing ? (
+              <Text style={styles.name}>{`${nome || ""} ${
+                sobrenome || ""
+              }`}</Text>
+            ) : (
+              <TextInput
+                style={[styles.input, { fontSize: 22, fontWeight: "bold" }]}
+                value={name}
+                onChangeText={setName}
+                placeholder="Nome"
+              />
+            )}
           </View>
+
           <View style={styles.address}>
             <View style={styles.addressGroup}>
               <Text style={styles.addressTitle}>Email</Text>
-              <Text style={styles.addressValue}>{profile.email}</Text>
+              {!isEditing ? (
+                <Text style={styles.addressValue}>{email}</Text>
+              ) : (
+                <TextInput
+                  style={styles.input}
+                  value={emailState}
+                  onChangeText={setEmailState}
+                  placeholder="Email"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              )}
             </View>
+
             <View style={styles.addressGroup}>
               <Text style={styles.addressTitle}>Nascimento</Text>
               {!isEditing && (
-                <Text style={styles.addressValue}>{profile.birthDate}</Text>
+                <Text style={styles.addressValue}>{birthDate}</Text>
               )}
               {isEditing && (
                 <EditInput
@@ -96,6 +162,7 @@ export const Profile: FC<ProfileProps> = ({ isEditMode }) => {
                 />
               )}
             </View>
+
             <View style={styles.addressGroup}>
               <Text style={styles.addressTitle}>Telefone</Text>
               {!isEditing && <Text style={styles.addressValue}>{phone}</Text>}
@@ -109,6 +176,7 @@ export const Profile: FC<ProfileProps> = ({ isEditMode }) => {
                 />
               )}
             </View>
+
             <View style={styles.addressGroup}>
               <Text style={styles.addressTitle}>Endereço</Text>
               {!isEditing && <Text style={styles.addressValue}>{address}</Text>}
