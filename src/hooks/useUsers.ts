@@ -2,8 +2,8 @@ import { createCollectionHook } from "@/services/createCollectionHook";
 
 export type User = {
   id: string;
-  criadoEm: string;
-  dataNascimento: string;
+  criadoEm: Date | string;
+  dataNascimento: Date | string;
   email: string;
   logradouro: string;
   nome: string;
