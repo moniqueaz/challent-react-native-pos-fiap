@@ -66,7 +66,7 @@ const NewSalePage = () => {
           ...prevForm,
           productHarvest: value,
           quantity: selectedProduct.quantity.toString(),
-          unitPrice: formatCurrency(selectedProduct.unitPrice.toString()),
+          unitPrice: selectedProduct.unitPrice.toString(),
           totalProfit: calculateProfit(
             prevForm.saleUnitPrice,
             selectedProduct.quantity.toString(),
@@ -106,7 +106,7 @@ const NewSalePage = () => {
           (option) =>
             `${option.productName} - ${option.harvest}` === form.productHarvest
         )?.productId ?? "",
-      unitPrice: Number(form.unitPrice?.replace(/\D/g, "") || "0") / 100,
+      unitPrice: Number(form.unitPrice?.replace(/\D/g, "") || "0"),
       totalProfit: Number(form.totalProfit?.replace(/\D/g, "") || "0") / 100,
       totalSale: Number(form.totalSale?.replace(/\D/g, "") || "0") / 100,
       uid: "",
