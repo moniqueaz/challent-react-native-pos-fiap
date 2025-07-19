@@ -6,7 +6,7 @@ import { useStatus } from "@/hooks/useStatus";
 export type Product = {
   id: string;
   name: string;
-  amount: string;
+  amount: number;
   date: string;
   harvest: string;
   id_product: string;
@@ -33,17 +33,22 @@ export const useProduct = () => {
   const { data: statusData } = useStatus();
   const statusOptions = statusData.map((status) => status.name);
 
+  interface CriarProdutoInput {
+    name: string;
+    value: number;
+    amount: number;
+    date: string;
+    harvest: string;
+    location: string;
+    status: string;
+  }
+
   const criarProduto = (product: CriarProdutoInput) => {
     const newProduct: Omit<Product, "id"> = {
-      name: product.productName,
-      amount: product.producedQuantity,
-      date: product.productionDate,
-      harvest: `${product.harvest} - ${new Date().getTime()}`,
-      id_product: new Date().getTime().toString(),
-      location: "Localização",
-      status: product.status,
+      ...product,
       uid,
-      value: product.value,
+      id_product: new Date().getTime().toString(),
+      harvest: `${product.harvest} - ${new Date().getTime()}`,
     };
 
     return create(newProduct);
