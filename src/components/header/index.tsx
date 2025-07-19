@@ -1,6 +1,5 @@
 import { View, TouchableOpacity, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Input } from "@/components/input";
 import { Menu } from "@/components/menu";
 
 import { styles } from "./styles";

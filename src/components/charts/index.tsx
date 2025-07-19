@@ -188,17 +188,12 @@ const Pie = ({
   );
 };
 
-export const Line = () => {
-  const lineData = [
-    { value: 0 },
-    { value: 10, label: "2011" },
-    { value: 8, label: "2012" },
-    { value: 58, label: "2013" },
-    { value: 56, label: "2014" },
-    { value: 78, label: "2015" },
-    { value: 74, label: "2016" },
-    { value: 98, label: "2017" },
-  ];
+type LineProps = {
+  data: Array<{ value: number; label: string }>;
+};
+
+export const Line = ({ data }: LineProps) => {
+  const lineData = [{ value: 0 }, ...data];
   const dataSet: Array<DataSet> = [
     {
       data: lineData,
@@ -206,6 +201,12 @@ export const Line = () => {
       startFillColor: "skyblue",
     },
   ];
+
+  const getMaxValue = (data: Array<{ value: number }>) => {
+    return Math.max(...data.map((item) => item.value));
+  };
+
+  const maxValue = getMaxValue(lineData);
   return (
     <View style={{ overflow: "hidden" }}>
       <LineChart
@@ -218,7 +219,7 @@ export const Line = () => {
         endOpacity={0.3}
         textFontSize={13}
         showXAxisIndices
-        maxValue={100}
+        maxValue={maxValue + 20}
       />
     </View>
   );

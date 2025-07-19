@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { createCollectionHook } from "@/services/createCollectionHook";
 
-type Status = {
+export type Status = {
   name: string;
 };
 
