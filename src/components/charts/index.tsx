@@ -5,129 +5,22 @@ import { colors } from "@/styles/colors";
 
 import { styles } from "./styles";
 
-const Bar = () => {
-  const data = [
-    {
-      value: 40,
-      label: "Jan",
-      spacing: 3,
-      labelWidth: 30,
-      labelTextStyle: { color: colors.gray[400] },
-      frontColor: colors.blue[200],
-    },
-    { value: 50, frontColor: colors.green[400] },
-    {
-      value: 50,
-      label: "Feb",
-      spacing: 3,
-      labelWidth: 30,
-      labelTextStyle: { color: colors.gray[400] },
-      frontColor: colors.blue[200],
-    },
-    { value: 40, frontColor: colors.red[400] },
-    {
-      value: 75,
-      label: "Mar",
-      spacing: 3,
-      labelWidth: 30,
-      labelTextStyle: { color: colors.gray[400] },
-      frontColor: colors.blue[200],
-    },
-    { value: 80, frontColor: colors.green[400] },
-    {
-      value: 30,
-      label: "Apr",
-      spacing: 3,
-      labelWidth: 30,
-      labelTextStyle: { color: colors.gray[400] },
-      frontColor: colors.blue[200],
-    },
-    { value: 20, frontColor: colors.red[400] },
-    {
-      value: 60,
-      label: "May",
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: { color: colors.gray[400] },
-      frontColor: colors.blue[200],
-    },
-    { value: 75, frontColor: colors.green[400] },
-    {
-      value: 65,
-      label: "Jun",
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: { color: colors.gray[400] },
-      frontColor: colors.blue[200],
-    },
-    { value: 70, frontColor: colors.green[400] },
-    {
-      value: 40,
-      label: "Jul",
-      spacing: 3,
-      labelWidth: 30,
-      labelTextStyle: { color: colors.gray[400] },
-      frontColor: colors.blue[200],
-    },
-    { value: 50, frontColor: colors.green[400] },
-    {
-      value: 50,
-      label: "Ago",
-      spacing: 3,
-      labelWidth: 30,
-      labelTextStyle: { color: colors.gray[400] },
-      frontColor: colors.blue[200],
-    },
-    { value: 40, frontColor: colors.red[400] },
-    {
-      value: 75,
-      label: "Set",
-      spacing: 3,
-      labelWidth: 30,
-      labelTextStyle: { color: colors.gray[400] },
-      frontColor: colors.blue[200],
-    },
-    { value: 80, frontColor: colors.green[400] },
-    {
-      value: 30,
-      label: "Out",
-      spacing: 3,
-      labelWidth: 30,
-      labelTextStyle: { color: colors.gray[400] },
-      frontColor: colors.blue[200],
-    },
-    { value: 20, frontColor: colors.red[400] },
-    {
-      value: 60,
-      label: "Nov",
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: { color: colors.gray[400] },
-      frontColor: colors.blue[200],
-    },
-    { value: 75, frontColor: colors.green[400] },
-    {
-      value: 65,
-      label: "Dec",
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: { color: colors.gray[400] },
-      frontColor: colors.blue[200],
-    },
-    { value: 70, frontColor: colors.green[400] },
-  ];
-
+const Bar = ({
+  data,
+}: {
+  data: { value: number; label: string; frontColor?: string }[];
+}) => {
   return (
     <View style={styles.container}>
       <ScrollView>
         <BarChart
           data={data}
-          barWidth={8}
+          barWidth={14}
           spacing={24}
           roundedTop
           roundedBottom={false}
-          xAxisThickness={0}
-          yAxisThickness={0}
+          xAxisThickness={1}
+          yAxisThickness={1}
           yAxisTextStyle={{ color: colors.gray[400] }}
           noOfSections={6}
           maxValue={120}

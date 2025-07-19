@@ -69,6 +69,13 @@ const calcPercentInProduction = (data: ProductCollection[]) => {
   };
 };
 
+const mapProductIdToName = (products: ProductCollection[] | Product[]) => {
+  return products.reduce((acc, product) => {
+    acc[product.id_product] = product.name;
+    return acc;
+  }, {} as Record<string, string>);
+};
+
 export const useProduct = () => {
   const { uid } = useUsers();
   const { data, create, updateByProductId, getByUid } =
@@ -118,5 +125,6 @@ export const useProduct = () => {
       mountTotalProductsStatus(products, statusData),
     getTotalProduction: calcPercentInProduction,
     getTotalStockByYear,
+    productMapping: data ? mapProductIdToName(data) : {},
   };
 };
