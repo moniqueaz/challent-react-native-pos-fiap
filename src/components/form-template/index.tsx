@@ -17,7 +17,7 @@ type InputField = {
   placeholder: string;
   name: string;
   value: string;
-  type?: "text" | "date" | "dropdown";
+  type?: "text" | "date" | "dropdown" | "checkbox";
   options?: string[];
   keyboardType?: "default" | "numeric" | "email-address";
   disabled?: boolean;
@@ -68,6 +68,35 @@ export const FormTemplate = ({
                   editable={false}
                   style={[styles.input, styles.disabledInput]}
                 />
+              </View>
+            );
+          }
+
+          if (input.type === "checkbox") {
+            const isChecked = input.value === "true";
+            return (
+              <View key={index} style={styles.inputWrapper}>
+                <TouchableOpacity
+                  style={styles.checkboxContainer}
+                  onPress={() =>
+                    onInputChange(input.name, isChecked ? "false" : "true")
+                  }
+                >
+                  <View
+                    style={[
+                      styles.checkbox,
+                      isChecked && styles.checkboxChecked,
+                    ]}
+                  >
+                    {isChecked && (
+                      <MaterialIcons name="check" size={16} color="#fff" />
+                    )}
+                  </View>
+                  <Text style={styles.label}>{input.label}</Text>
+                </TouchableOpacity>
+                {errors[input.name] && (
+                  <Text style={styles.errorText}>{errors[input.name]}</Text>
+                )}
               </View>
             );
           }
@@ -186,19 +215,15 @@ export const FormTemplate = ({
           onChange={(_, selectedDate) => {
             setShowDatePicker(false);
             if (selectedDate) {
-              const formattedDay: string = selectedDate
+              const formattedDay = selectedDate
                 .getDate()
                 .toString()
                 .padStart(2, "0");
-              const formattedMonth: string = (selectedDate.getMonth() + 1)
+              const formattedMonth = (selectedDate.getMonth() + 1)
                 .toString()
                 .padStart(2, "0");
-              const formattedYear: string = selectedDate
-                .getFullYear()
-                .toString();
-
-              const formattedDate: string = `${formattedDay}/${formattedMonth}/${formattedYear}`;
-
+              const formattedYear = selectedDate.getFullYear().toString();
+              const formattedDate = `${formattedDay}/${formattedMonth}/${formattedYear}`;
               onInputChange(currentDateField, formattedDate);
             }
           }}
