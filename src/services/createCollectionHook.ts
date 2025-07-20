@@ -14,7 +14,10 @@ export type CollectionOperations<T> = {
   refresh: () => Promise<void>;
 };
 
-export const createCollectionHook = <T = unknown>(collectionName: string) => {
+export const createCollectionHook = <T = unknown>(
+  collectionName: string,
+  starter: boolean = true
+) => {
   const collection = useCollection(collectionName);
   const [data, setData] = useState<T[]>([]);
   const { user } = useAuth();
@@ -63,6 +66,22 @@ export const createCollectionHook = <T = unknown>(collectionName: string) => {
       throw err;
     }
   };
+  const getByRead = async (uid: string): Promise<T | null> => {
+    try {
+      setLoading(true);
+      setError(null);
+      const result = (await collection.getByRead(uid)) as T | null;
+      setData(result as T[]);
+      setLoading(false);
+      return result;
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Erro desconhecido";
+      setError(errorMessage);
+      setLoading(false);
+      throw err;
+    }
+  };
   const getByProductId = async (id: string): Promise<T | null> => {
     try {
       setError(null);
@@ -82,6 +101,24 @@ export const createCollectionHook = <T = unknown>(collectionName: string) => {
       setError(null);
       const id = await collection.create(item);
       await refresh();
+      return id;
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Erro desconhecido";
+      setError(errorMessage);
+      throw err;
+    }
+  };
+
+  const createNotification = async (
+    item: Omit<T, "id">,
+    uid: string
+  ): Promise<string> => {
+    console.log("item: ", item);
+    try {
+      setError(null);
+      const id = await collection.create(item);
+      await getByRead(uid);
       return id;
     } catch (err) {
       const errorMessage =
@@ -143,13 +180,25 @@ export const createCollectionHook = <T = unknown>(collectionName: string) => {
       throw err;
     }
   };
+  const updateAll = async (id: string, item: Partial<T>): Promise<void> => {
+    try {
+      setError(null);
+      await collection.updateAll(id, item);
+      await getByRead(id);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Erro desconhecido";
+      setError(errorMessage);
+      throw err;
+    }
+  };
 
   const refresh = async (): Promise<void> => {
     await getById(uid || "");
   };
 
   useEffect(() => {
-    getByUid(uid || "");
+    starter && getByUid(uid || "");
   }, []);
 
   return {
@@ -166,5 +215,8 @@ export const createCollectionHook = <T = unknown>(collectionName: string) => {
     deleteByProductId,
     updateByProductId,
     getByProductId,
+    updateAll,
+    getByRead,
+    createNotification,
   };
 };
