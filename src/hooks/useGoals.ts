@@ -33,5 +33,30 @@ export const useGoals = () => {
     return await getByProductId(id);
   };
 
-  return { data, addGoal, products, getGoalsByProductId };
+  const goalsWithProgress = data?.map((goal) => {
+    const product = products?.find(
+      (prod) => prod.id_product === goal.id_product
+    );
+
+    const productName = product
+      ? `${product.name} - ${product.harvest}`
+      : "Produto não encontrado";
+
+    return {
+      ...goal,
+      productName,
+      progress:
+        goal.desired_profit > 0
+          ? (goal.current_profit / goal.desired_profit) * 100
+          : 0,
+    };
+  });
+
+  return {
+    data,
+    addGoal,
+    products,
+    getGoalsByProductId,
+    goalsWithProgress,
+  };
 };
