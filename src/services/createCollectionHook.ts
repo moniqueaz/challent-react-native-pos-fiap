@@ -63,6 +63,19 @@ export const createCollectionHook = <T = unknown>(collectionName: string) => {
       throw err;
     }
   };
+  const getByProductId = async (id: string): Promise<T | null> => {
+    try {
+      setError(null);
+      const result = (await collection.getByProductId(id)) as T | null;
+      setData(result as T[]);
+      return result;
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Erro desconhecido";
+      setError(errorMessage);
+      throw err;
+    }
+  };
 
   const create = async (item: Omit<T, "id">): Promise<string> => {
     try {
@@ -152,5 +165,6 @@ export const createCollectionHook = <T = unknown>(collectionName: string) => {
     getByUid,
     deleteByProductId,
     updateByProductId,
+    getByProductId,
   };
 };

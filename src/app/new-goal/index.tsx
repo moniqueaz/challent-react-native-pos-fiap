@@ -8,11 +8,10 @@ import {
 import { FormTemplate } from "@/components/form-template";
 import { router } from "expo-router";
 import { useGoals } from "@/hooks/useGoals";
-import { useProduct } from "@/hooks/useProduct";
+import { formatCurrency } from "@/utils/formatter";
 
 const NewGoalPage = () => {
-  const { addGoal } = useGoals();
-  const { productNames } = useProduct();
+  const { addGoal, products, data } = useGoals();
 
   const initialFormState = {
     productName: "",
@@ -23,14 +22,7 @@ const NewGoalPage = () => {
   };
 
   const [form, setForm] = useState(initialFormState);
-
-  const formatCurrency = (value: string): string => {
-    const numericValue = Number(value.replace(/\D/g, "")) / 100;
-    return numericValue.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-  };
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
     if (field === "completed") {
@@ -38,15 +30,42 @@ const NewGoalPage = () => {
         ...prev,
         [field]: value === "true",
       }));
-    } else if (field === "current_profit" || field === "desired_profit") {
+      return;
+    }
+    if (field === "current_profit" || field === "desired_profit") {
       const formattedValue = formatCurrency(value);
       setForm((prev) => ({
         ...prev,
         [field]: formattedValue,
       }));
-    } else {
-      setForm((prev) => ({ ...prev, [field]: value }));
+      return;
     }
+
+    if (field === "productName") {
+      const selectedProduct = products.find(
+        (p) => `${p.name} - ${p.harvest}` === value
+      );
+      const desiredProfit = data.find(
+        (goal) => goal.id_product === selectedProduct?.id_product
+      )?.desired_profit;
+
+      if (selectedProduct) {
+        setForm((prev) => {
+          return {
+            ...prev,
+            [field]: value,
+            ["desired_profit"]: desiredProfit
+              ? formatCurrency(desiredProfit.toString())
+              : "",
+            id_product: selectedProduct.id_product,
+          };
+        });
+        setIsUpdating(!!desiredProfit);
+        return;
+      }
+    }
+
+    setForm((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleClearForm = () => {
@@ -56,15 +75,19 @@ const NewGoalPage = () => {
   const handleSubmit = async () => {
     try {
       const idProduct =
-        productNames.find((p) => p.name === form.productName)?.id || "";
+        products.find((p) => `${p.name} - ${p.harvest}` === form.productName)
+          ?.id_product || "";
 
-      await addGoal({
-        date: form.date,
-        current_profit: Number(form.current_profit.replace(/\D/g, "")) || 0,
-        desired_profit: Number(form.desired_profit.replace(/\D/g, "")) || 0,
-        completed: form.completed,
-        id_product: idProduct,
-      });
+      await addGoal(
+        {
+          current_profit: Number(form.desired_profit.replace(/\D/g, "")) || 0,
+          desired_profit: Number(form.desired_profit.replace(/\D/g, "")) || 0,
+          completed: form.completed,
+          id_product: idProduct,
+          date: new Date().toISOString(),
+        },
+        isUpdating
+      );
 
       Alert.alert("Meta salva com sucesso!");
 
@@ -93,23 +116,9 @@ const NewGoalPage = () => {
               name: "productName",
               value: form.productName,
               type: "dropdown",
-              options: productNames.map(({ name }) => name),
-              required: true,
-            },
-            {
-              label: "Data",
-              placeholder: "Selecione a data",
-              name: "date",
-              value: form.date,
-              type: "date",
-              required: true,
-            },
-            {
-              label: "Lucro atual",
-              placeholder: "Ex: R$ 3.000,00",
-              name: "current_profit",
-              value: form.current_profit,
-              keyboardType: "numeric",
+              options: products.map(
+                (option) => `${option.name} - ${option.harvest}`
+              ),
               required: true,
             },
             {

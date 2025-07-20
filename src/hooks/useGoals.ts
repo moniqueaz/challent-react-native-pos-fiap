@@ -1,32 +1,37 @@
 import { createCollectionHook } from "@/services/createCollectionHook";
-import { addDoc, collection } from "firebase/firestore";
 import { useAuth } from "@/context/AuthContext";
-import { db } from "@/services/firebaseConfig";
+import { useProduct } from "@/hooks/useProduct";
+import { useUsers } from "@/hooks/useUsers";
 
 export type Goal = {
-  id?: string;
   date: string;
   current_profit: number;
   desired_profit: number;
   completed: boolean;
-  id_product?: string;
+  id_product: string;
   uid?: string;
 };
 
 export const useGoals = () => {
-  const { data } = createCollectionHook<Goal>("goals");
+  const { data, create, getByProductId, updateByProductId } =
+    createCollectionHook<Goal>("goals");
+  const { data: products } = useProduct();
+  const { uid } = useUsers();
+
   const { user } = useAuth();
 
-  const addGoal = async (goal: Goal) => {
+  const addGoal = async (goal: Goal, isUpdate: boolean) => {
     if (!user) return;
-
-    await addDoc(collection(db, "goals"), {
-      ...goal,
-      uid: user.uid,
-      id_product: new Date().getTime().toString(),
-      id: new Date().getTime().toString(),
-    });
+    if (isUpdate) {
+      await updateByProductId(goal.id_product, { ...goal, uid });
+    } else {
+      await create({ ...goal, uid });
+    }
   };
 
-  return { goals: data, addGoal };
+  const getGoalsByProductId = async (id: string) => {
+    return await getByProductId(id);
+  };
+
+  return { data, addGoal, products, getGoalsByProductId };
 };

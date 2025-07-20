@@ -35,6 +35,7 @@ const mountTotalProduct = (data: ProductCollection[]) => {
 
 const mountStatusOptions = (statusData: Status[]) =>
   statusData.map((status) => status.name);
+
 const mountTotalProductsStatus = (
   products: ProductCollection[],
   status: Status[]
@@ -104,8 +105,6 @@ export const useProduct = () => {
       return { ...acc, [year]: (acc[year] || 0) + parseInt(product.amount) };
     }, {});
   };
-
-  console.log(getTotalStockByYear(data));
 
   return {
     data,

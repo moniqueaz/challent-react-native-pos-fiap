@@ -57,6 +57,15 @@ export const useCollection = (name: string) => {
       }));
       return result;
     },
+    getByProductId: async (id: string) => {
+      const q = query(contextCollection, where("id_product", "==", id));
+      const snapshot = await getDocs(q);
+      const result = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      return result;
+    },
     deleteByProductId: async (id: string) => {
       const q = query(contextCollection, where("id_product", "==", id));
       const snapshot = await getDocs(q);
