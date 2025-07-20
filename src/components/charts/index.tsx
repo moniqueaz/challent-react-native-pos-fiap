@@ -2,7 +2,7 @@ import { View, ScrollView, Text } from "react-native";
 import { BarChart, PieChart, LineChart } from "react-native-gifted-charts";
 import { DataSet } from "gifted-charts-core";
 import { colors } from "@/styles/colors";
-
+import { EmptyMessage } from "@/components/EmptyMessage";
 import { styles } from "./styles";
 
 const Bar = ({
@@ -10,6 +10,13 @@ const Bar = ({
 }: {
   data: { value: number; label: string; frontColor?: string }[];
 }) => {
+  if (!data || data.length === 0) {
+    return (
+      <View style={styles.container}>
+        <EmptyMessage>Sem dados disponíveis</EmptyMessage>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -98,6 +105,14 @@ export const Line = ({ data }: LineProps) => {
   const getMaxValue = (data: Array<{ value: number }>) => {
     return Math.max(...data.map((item) => item.value));
   };
+
+  if (!data || data.length === 0) {
+    return (
+      <View style={styles.container}>
+        <EmptyMessage>Sem dados disponíveis</EmptyMessage>
+      </View>
+    );
+  }
 
   const maxValue = getMaxValue(lineData);
   return (

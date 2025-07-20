@@ -38,6 +38,16 @@ export const useCollection = (name: string) => {
       await setDoc(docRef, data, { merge: true });
       return id;
     },
+
+    updateAll: async (id: string, data: Record<string, any>) => {
+      const q = query(contextCollection, where("uid", "==", id));
+      const snapshot = await getDocs(q);
+      const updatePromises = snapshot.docs.map((docSnapshot) =>
+        setDoc(doc(contextCollection, docSnapshot.id), data, { merge: true })
+      );
+      await Promise.all(updatePromises);
+      return snapshot.docs.length; // retorna quantos documentos foram atualizados
+    },
     delete: async (id: string) => {
       const docRef = doc(contextCollection, id);
       await deleteDoc(docRef);
@@ -50,6 +60,32 @@ export const useCollection = (name: string) => {
     },
     getByUid: async (uid: string) => {
       const q = query(contextCollection, where("uid", "==", uid));
+      const snapshot = await getDocs(q);
+      const result = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      return result;
+    },
+    getByRead: async (uid: string) => {
+      const q = query(
+        contextCollection,
+        where("uid", "==", uid),
+        where("read", "==", false)
+      );
+      const snapshot = await getDocs(q);
+      const result = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      return result;
+    },
+    getBySaled: async (uid: string) => {
+      const q = query(
+        contextCollection,
+        where("uid", "==", uid),
+        where("saled", "==", false)
+      );
       const snapshot = await getDocs(q);
       const result = snapshot.docs.map((doc) => ({
         id: doc.id,

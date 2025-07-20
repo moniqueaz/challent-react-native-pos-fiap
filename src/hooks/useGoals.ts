@@ -33,5 +33,5 @@ export const useGoals = () => {
     return await getByProductId(id);
   };
 
-  return { data, addGoal, products, getGoalsByProductId };
+  return { data, addGoal, products, getGoalsByProductId, getByProductId };
 };
