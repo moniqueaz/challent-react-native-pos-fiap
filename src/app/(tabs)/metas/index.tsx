@@ -48,7 +48,7 @@ const GoalsPage = () => {
           )}
         </View>
         {goalsWithProgress?.length > 0 ? (
-          goalsWithProgress.map((goal) => {
+          goalsWithProgress.map((goal, index) => {
             const getColor = (progress: number) => {
               if (progress >= 100) return colors.green[400];
               if (progress >= 75) return colors.blue[200];
@@ -68,7 +68,7 @@ const GoalsPage = () => {
 
             return (
               <Section
-                key={goal.id_product}
+                key={goal.id_product + index}
                 title={`Meta: ${goal.productName}`}
                 style={{ marginBottom: 24 }}
               >

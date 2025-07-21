@@ -21,7 +21,6 @@ export const useNotification = () => {
 
   const { data, createNotification, updateAll, getByRead } =
     createCollectionHook<Notification>("notification", false);
-  console.log("data: ", data);
 
   useEffect(() => {
     getByRead(uid);
@@ -47,6 +46,8 @@ export const useNotification = () => {
     data,
     createNotification,
     updateAll,
+    setUnreadCount,
+    updateNotificationCount,
   };
 };
 
@@ -67,7 +68,8 @@ export const useNotificationActions = () => {
   };
 
   const markAllAsRead = async () => {
-    if (data.length === 0) return;
+    // if (data.length === 0) return;
+
     try {
       await updateAll(uid, { read: true });
     } catch (error) {}

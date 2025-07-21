@@ -71,6 +71,7 @@ export const createCollectionHook = <T = unknown>(
       setLoading(true);
       setError(null);
       const result = (await collection.getByRead(uid)) as T | null;
+
       setData(result as T[]);
       setLoading(false);
       return result;
@@ -114,7 +115,6 @@ export const createCollectionHook = <T = unknown>(
     item: Omit<T, "id">,
     uid: string
   ): Promise<string> => {
-    console.log("item: ", item);
     try {
       setError(null);
       const id = await collection.create(item);

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { Section } from "@/components/section";
-import { useGoals } from "@/hooks/useGoals";
 import {
   useNotification,
   useNotificationActions,
@@ -10,12 +9,14 @@ import { styles } from "./styles";
 import { EmptyMessage } from "@/components/EmptyMessage";
 
 const Pages = () => {
-  useGoals();
-  const { notifications } = useNotification();
+  const { notifications, updateNotificationCount } = useNotification();
   const { markAllAsRead } = useNotificationActions();
 
   useEffect(() => {
-    markAllAsRead();
+    return () => {
+      updateNotificationCount(0);
+      markAllAsRead();
+    };
   }, []);
 
   return (

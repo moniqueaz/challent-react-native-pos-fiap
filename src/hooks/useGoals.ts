@@ -70,5 +70,6 @@ export const useGoals = () => {
     products,
     getGoalsByProductId,
     goalsWithProgress,
+    getByProductId,
   };
 };
