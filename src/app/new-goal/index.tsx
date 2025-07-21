@@ -80,8 +80,10 @@ const NewGoalPage = () => {
 
       await addGoal(
         {
-          current_profit: Number(form.desired_profit.replace(/\D/g, "")) || 0,
-          desired_profit: Number(form.desired_profit.replace(/\D/g, "")) || 0,
+          current_profit:
+            Number(form.desired_profit.replace(/\D/g, "")) / 100 || 0,
+          desired_profit:
+            Number(form.desired_profit.replace(/\D/g, "")) / 100 || 0,
           completed: form.completed,
           id_product: idProduct,
           date: new Date().toISOString(),
