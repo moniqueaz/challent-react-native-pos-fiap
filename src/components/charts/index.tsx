@@ -34,6 +34,7 @@ type PieProps = {
   total?: string;
   label?: string;
   labelStyle?: LabelStyle;
+  data?: Array<{ value: number; color: string }>;
 };
 
 type LabelStyle = {
@@ -46,12 +47,8 @@ const Pie = ({
   total,
   label,
   labelStyle = { color: colors.text.primary, fontSize: 20, fontWeight: "bold" },
-}: PieProps) => {
-  const data = [
-    { value: 70, color: colors.blue[200] },
-    { value: 30, color: colors.gray[200] },
-  ];
-
+  data = [],
+}: PieProps & { data: Array<{ value: number; color: string }> }) => {
   return (
     <View style={{ ...styles.container, ...styles.containerPie }}>
       <PieChart
@@ -61,7 +58,7 @@ const Pie = ({
         centerLabelComponent={() => {
           return (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
-              {label && (
+              {total && (
                 <Text
                   style={{
                     color: labelStyle.color ?? colors.text.primary,
@@ -69,10 +66,9 @@ const Pie = ({
                     fontSize: labelStyle.fontSize ?? 30,
                   }}
                 >
-                  {label}
+                  {total}
                 </Text>
               )}
-              {total && <Text style={{ fontSize: 18 }}>{total}</Text>}
             </View>
           );
         }}
