@@ -66,6 +66,20 @@ export const createCollectionHook = <T = unknown>(
       throw err;
     }
   };
+  const getByUidNoSaled = async (uid: string): Promise<T | null> => {
+    try {
+      setError(null);
+      const result = (await collection.getByUidNoSaled(uid)) as T | null;
+      console.log("result: ", result);
+      setData(result as T[]);
+      return result;
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Erro desconhecido";
+      setError(errorMessage);
+      throw err;
+    }
+  };
   const getByRead = async (uid: string): Promise<T | null> => {
     try {
       setLoading(true);
@@ -218,5 +232,6 @@ export const createCollectionHook = <T = unknown>(
     updateAll,
     getByRead,
     createNotification,
+    getByUidNoSaled,
   };
 };

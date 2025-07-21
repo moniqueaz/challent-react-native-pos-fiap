@@ -67,6 +67,20 @@ export const useCollection = (name: string) => {
       }));
       return result;
     },
+    getByUidNoSaled: async (uid: string) => {
+      const q = query(
+        contextCollection,
+        where("uid", "==", uid),
+        where("saled", "==", false)
+      );
+      const snapshot = await getDocs(q);
+      const result = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log("result: ", result);
+      return result;
+    },
     getByRead: async (uid: string) => {
       const q = query(
         contextCollection,

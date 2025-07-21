@@ -2,6 +2,7 @@ import { createCollectionHook } from "@/services/createCollectionHook";
 import { useProductName } from "@/hooks/useProductName";
 import { useUsers } from "@/hooks/useUsers";
 import { useStatus, Status } from "@/hooks/useStatus";
+import { useEffect } from "react";
 
 export type Product = {
   id: string;
@@ -81,12 +82,16 @@ const mapProductIdToName = (products: ProductCollection[] | Product[]) => {
 
 export const useProduct = () => {
   const { uid } = useUsers();
-  const { data, create, updateByProductId, getByUid } =
+  const { data, create, updateByProductId, getByUid, getByUidNoSaled } =
     createCollectionHook<ProductCollection>("product");
   const productNames = useProductName();
   const { data: statusData } = useStatus();
   const statusOptions = mountStatusOptions(statusData);
   const totalProducts = mountTotalProduct(data);
+
+  useEffect(() => {
+    getByUidNoSaled(uid);
+  }, []);
 
   const criarProduto = (product: Omit<ProductCollection, "id">) => {
     const newProduct: Omit<ProductCollection, "id"> = {
