@@ -14,6 +14,7 @@ export type Product = {
   status: string;
   uid: string;
   value: number;
+  saled: boolean;
 };
 
 export type ProductCollection = {
@@ -27,6 +28,7 @@ export type ProductCollection = {
   status: string;
   uid: string;
   value: string;
+  saled: boolean;
 };
 
 const mountTotalProduct = (data: ProductCollection[]) => {
@@ -92,6 +94,7 @@ export const useProduct = () => {
       uid,
       id_product: new Date().getTime().toString(),
       harvest: `${product.harvest} - ${new Date().getTime()}`,
+      saled: false,
     };
 
     return create(newProduct);
