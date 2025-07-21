@@ -24,6 +24,13 @@ const Pages = () => {
 
   const statusProducts: { [key: string]: string } =
     getTotalStatusProducts(data);
+
+  const productionData = getTotalProduction(data);
+
+  const pieChartData = [
+    { value: productionData.percent, color: "#4caf50" }, 
+    { value: 100 - productionData.percent, color: "#f44336" }, 
+  ];
   return (
     <ScrollView>
       <View style={{ flex: 1, padding: 16, gap: 16 }}>
@@ -41,6 +48,7 @@ const Pages = () => {
           <Charts.Pie
             total={formatPercentage(getTotalProduction(data).percent)}
             label="Total"
+            data={pieChartData}
           />
         </Section>
         <Section title="Estoque">
